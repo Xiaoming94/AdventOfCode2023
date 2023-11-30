@@ -32,6 +32,7 @@ target_include_directories(
     PUBLIC tutorial/inc/
 )
 
+# Tutorial Tests, this one might be deleted in the future
 add_executable(
     tutorialtests
     tutorial/tests/tutorialtest.cpp
