@@ -22,4 +22,31 @@ set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
 
 enable_testing()
-add_executable(adventOfCode tutorial/tutorial.cpp)
+add_executable(
+    adventOfCode
+    tutorial/main.cpp
+)
+
+target_include_directories(
+    adventOfCode 
+    PUBLIC tutorial/inc/
+)
+
+add_executable(
+    tutorialtests
+    tutorial/tests/tutorialtest.cpp
+    tutorial/src/tutorial.cpp
+)
+
+target_include_directories(
+    tutorialtests
+    PUBLIC tutorial/inc/
+)
+
+target_link_libraries(
+    tutorialtests
+    GTest::gtest_main
+)
+
+include(GoogleTest)
+gtest_discover_tests(tutorialtests)
