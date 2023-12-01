@@ -53,6 +53,7 @@ namespace{
         {
             return 9u;
         }
+        std::cout << "Couldn't match argument" << std::endl;
         return 10u;
     }
 

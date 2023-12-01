@@ -42,7 +42,7 @@ class AdventOfCodeDay1Problem2Test : public TestWithParam<std::pair<input_t, res
 TEST_F(AdventOfCodeDay1Problem2Test, verify_sumNumberLinesV2)
 {
     constexpr auto input = "two1nine\neightwothree\nabcone2threexyz\nxtwone3four\n4nineeightseven2\nzoneight234\n7pqrstsixteen";
-    EXPECT_EQ(281, reconstructCalibrationDocument(input));
+    EXPECT_EQ(281, reconstructCalibrationDocumentV2(input));
 }
 
 TEST_P(AdventOfCodeDay1Problem2Test, unitTest_verifySolutionWithParams)
