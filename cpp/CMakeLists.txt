@@ -3,7 +3,7 @@
 
 cmake_minimum_required(VERSION 3.14)
 
-project(adventOfCode LANGUAGES CXX)
+project(adventOfCode LANGUAGES C CXX)
 
 # Setting C++ version 20
 set(CMAKE_CXX_STANDARD 20)
