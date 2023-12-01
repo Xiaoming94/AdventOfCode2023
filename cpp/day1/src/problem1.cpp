@@ -44,3 +44,8 @@ std::uint32_t reconstructCalibrationDocument(const std::string& input)
                                return result + reconstructCalibrationDocumentLine(currentLine);
                            });
 }
+
+std::uint32_t reconstructCalibrationDocumentV2(const std::string &input)
+{
+    return 0;
+}
