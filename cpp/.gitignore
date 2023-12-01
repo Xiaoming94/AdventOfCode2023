@@ -2,3 +2,4 @@ adventOfCode
 tutorialtests* 
 build/
 .cache/
+adventOfCode_tests*
