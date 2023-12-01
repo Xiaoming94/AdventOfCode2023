@@ -3,41 +3,20 @@
 #include <vector>
 #include <numeric>
 #include <sstream>
+#include <algorithm>
 
 namespace{
-    std::optional<std::uint8_t> convertToNumber(const char character)
+    std::uint8_t convertToNumber(const char character)
     {
-        if(std::isdigit(character))
-        {
-            return character - '0';
-        }
-        else
-        {
-            return std::nullopt;
-        }
-    }
-
-    bool isNotAssigned(std::uint32_t variable)
-    {
-        return variable > 9;
+        return character - '0';
     }
 
     std::uint32_t reconstructCalibrationDocumentLine(const std::string& input)
     {
-        auto first = 10u;
-        auto last = 10u;
-        for (const auto character : input)
-        {
-            if (const auto number = convertToNumber(character))
-            {
-                last = *number;
-                if (isNotAssigned(first))
-                {
-                    first = *number;
-                }
-            }
-        }
-        return first * 10 + last;
+        const auto isDigit = [](const auto inChar) -> bool { return std::isdigit(inChar); };
+        const auto firstDigit = std::find_if(input.begin(), input.end(), isDigit);
+        const auto lastDigit = std::find_if(input.rbegin(), input.rend(), isDigit);
+        return convertToNumber(*firstDigit) * 10 + convertToNumber(*lastDigit); 
     }
 
     std::vector<std::string> splitLines(const std::string& input)
@@ -60,9 +39,9 @@ std::uint32_t reconstructCalibrationDocument(const std::string& input)
     //For each lines : reconstructCalibrationDocumentLine(line)
     const std::vector<std::string> inputLines = splitLines(input);
     return std::accumulate(inputLines.begin(),
-                    inputLines.end(), 
-                    0,
-                    [](auto result, const auto& currentLine){
-                        return result + reconstructCalibrationDocumentLine(currentLine);
-                    });
+                           inputLines.end(), 
+                           0,
+                           [](auto result, const auto& currentLine){
+                               return result + reconstructCalibrationDocumentLine(currentLine);
+                           });
 }
