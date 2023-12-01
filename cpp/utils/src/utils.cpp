@@ -7,8 +7,7 @@ std::string readInput()
     std::string ret;
     while(std::getline(std::cin, line, '\n'))
     {
-        ret += line;
-        ret += "\n";
+        ret += line + '\n';
     }
     return ret;
 }
