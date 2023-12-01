@@ -5,5 +5,8 @@
 
 int main()
 {
-    std::cout << readInput();
+    const auto input = readInput();
+    const auto results = reconstructCalibrationDocument(input);
+    std::cout << "Reconstructed Calibration Number: " << results << std::endl;
+    return 0;
 }
