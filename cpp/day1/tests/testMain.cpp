@@ -39,7 +39,7 @@ INSTANTIATE_TEST_CASE_P(AdventOfCodeDay1,
 class AdventOfCodeDay1Problem2Test : public TestWithParam<std::pair<input_t, result_t>>
 {};
 
-TEST_F(AdventOfCodeDay1Problem2Test, DISABLED_verify_sumNumberLinesV2)
+TEST_F(AdventOfCodeDay1Problem2Test, verify_sumNumberLinesV2)
 {
     constexpr auto input = "two1nine\neightwothree\nabcone2threexyz\nxtwone3four\n4nineeightseven2\nzoneight234\n7pqrstsixteen";
     EXPECT_EQ(281, reconstructCalibrationDocument(input));
@@ -54,5 +54,12 @@ TEST_P(AdventOfCodeDay1Problem2Test, unitTest_verifySolutionWithParams)
 INSTANTIATE_TEST_CASE_P(AdventOfCodeDay1,
                         AdventOfCodeDay1Problem2Test,
                         Values(
-                            std::make_pair("onetwo",12)
+                            std::make_pair("onetwo",12),
+                            std::make_pair("one2",12),
+                            std::make_pair("avbasdoneavasdcw4asdfive",15),
+                            std::make_pair("61awevasdfive",65),
+                            std::make_pair("one",11),
+                            std::make_pair("6",66),
+                            std::make_pair("five2asdgq11\nasdf2two",73),
+                            std::make_pair("five2asdgq11\nasdfone2\n1",74)
                         ));
