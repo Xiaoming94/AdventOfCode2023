@@ -21,6 +21,31 @@ FetchContent_Declare(
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
 
+add_library(
+    utils_libs
+    STATIC utils/src/utils.cpp
+)
+
+target_include_directories(
+    utils_libs 
+    INTERFACE utils/interface/
+    PRIVATE utils/inc/
+)
+
+add_executable(
+    day1
+    day1/main.cpp
+    day1/src/problem1.cpp
+)
+
+
+target_include_directories(
+    day1
+    PRIVATE day1/inc/
+)
+
+target_link_libraries(day1 PUBLIC utils_libs)
+
 enable_testing()
 add_executable(
     adventOfCode_tests
@@ -30,12 +55,7 @@ add_executable(
 
 target_include_directories(
     adventOfCode_tests
-    PUBLIC day1/inc/
-)
-
-target_include_directories(
-    adventOfCode_tests
-    PUBLIC day1/inc/
+    PRIVATE day1/inc/
 )
 
 target_link_libraries(

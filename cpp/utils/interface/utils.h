@@ -1,0 +1,12 @@
+
+#pragma once
+#include <string>
+
+/////////////////////////////////////////////////////
+///
+/// @brief Function for reading the input from std::cin
+///
+/// @return The full input as a single string
+///
+/////////////////////////////////////////////////////
+std::string readInput();

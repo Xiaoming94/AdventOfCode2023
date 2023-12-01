@@ -1,5 +1,4 @@
 #include "problem1.h"
-#include <optional>
 #include <vector>
 #include <numeric>
 #include <sstream>
