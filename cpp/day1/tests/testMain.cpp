@@ -4,7 +4,7 @@
 
 using namespace ::testing;
 
-TEST(AdventOfCodeDay1Test, DISABLED_verify_sumOfNumbersInLines)
+TEST(AdventOfCodeDay1Test, verify_sumOfNumbersInLines)
 {
     constexpr auto input = "1abc2\npqr3stu8vwx\na1b2c3d4e5f\ntreb7uchet";
     EXPECT_EQ(142, reconstructCalibrationDocument(input));
@@ -49,5 +49,11 @@ TEST(AdventOfCodeDay1Test, verify_1LineOnly1Digit)
 TEST(AdventOfCodeDay1Test, verify_2Line)
 {
     constexpr auto input{"ab1c2\ngasd26"};
+    EXPECT_EQ(38, reconstructCalibrationDocument(input));
+}
+
+TEST(AdventOfCodeDay1Test, verify_2LineWithSpace)
+{
+    constexpr auto input{"ab1c2\ngasd2 6"};
     EXPECT_EQ(38, reconstructCalibrationDocument(input));
 }
