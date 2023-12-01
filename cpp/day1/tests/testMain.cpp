@@ -61,5 +61,6 @@ INSTANTIATE_TEST_CASE_P(AdventOfCodeDay1,
                             std::make_pair("one",11),
                             std::make_pair("6",66),
                             std::make_pair("five2asdgq11\nasdf2two",73),
-                            std::make_pair("five2asdgq11\nasdfone2\n1",74)
+                            std::make_pair("five2asdgq11\nasdfone2\n1",74),
+                            std::make_pair("oneight",18)
                         ));

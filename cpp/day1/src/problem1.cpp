@@ -82,10 +82,10 @@ namespace{
     {
         std::string inputCopy{input};
         std::vector <std::string> wordDigits;
-        const std::regex matchRegex("(one|two|three|two|three|four|five|six|seven|eight|nine|[0-9])");
+        const std::regex matchRegex("(?=(one|two|three|two|three|four|five|six|seven|eight|nine|[0-9])).");
         for(std::smatch matches; std::regex_search(inputCopy, matches, matchRegex);)
         {
-            wordDigits.push_back(matches.str());
+            wordDigits.push_back(matches.str(1));
             inputCopy = matches.suffix();
         }
     
