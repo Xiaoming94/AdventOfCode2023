@@ -33,18 +33,18 @@ target_include_directories(
 )
 
 add_executable(
-    day1
+    day1_exec
     day1/main.cpp
     day1/src/problem1.cpp
 )
 
 
 target_include_directories(
-    day1
+    day1_exec
     PRIVATE day1/inc/
 )
 
-target_link_libraries(day1 PUBLIC utils_libs)
+target_link_libraries(day1_exec PUBLIC utils_libs)
 
 enable_testing()
 add_executable(

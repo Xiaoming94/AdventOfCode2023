@@ -2,4 +2,5 @@
 
 std::string readInput()
 {
+    return "Hello World";
 }
