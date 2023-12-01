@@ -1,6 +1,6 @@
 #include "problem1.h"
 
-std::uint32_t tutorialFunction(std::uint32_t args)
+std::uint32_t reconstructCalibrationDocument(const std::string& input)
 {
-    return args * 2;
+    return 0;
 }

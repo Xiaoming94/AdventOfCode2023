@@ -4,8 +4,8 @@
 
 using namespace ::testing;
 
-TEST(Tutorial, BasicTest)
+TEST(AdventOfCodeDay1Test, verify_sumOfNumbersInLines)
 {
-    const auto results = tutorialFunction(42);
-    EXPECT_EQ(results, 84);
+    constexpr auto input = "1abc2\npqr3stu8vwx\na1b2c3d4e5f\ntreb7uchet";
+    EXPECT_EQ(142, reconstructCalibrationDocument(input));
 }
