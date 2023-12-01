@@ -23,31 +23,25 @@ FetchContent_MakeAvailable(googletest)
 
 enable_testing()
 add_executable(
-    adventOfCode
-    tutorial/main.cpp
+    adventOfCode_tests
+    day1/tests/testMain.cpp
+    day1/src/problem1.cpp
 )
 
 target_include_directories(
-    adventOfCode 
-    PUBLIC tutorial/inc/
-)
-
-# Tutorial Tests, this one might be deleted in the future
-add_executable(
-    tutorialtests
-    tutorial/tests/tutorialtest.cpp
-    tutorial/src/tutorial.cpp
+    adventOfCode_tests
+    PUBLIC day1/inc/
 )
 
 target_include_directories(
-    tutorialtests
-    PUBLIC tutorial/inc/
+    adventOfCode_tests
+    PUBLIC day1/inc/
 )
 
 target_link_libraries(
-    tutorialtests
+    adventOfCode_tests
     GTest::gtest_main
 )
 
 include(GoogleTest)
-gtest_discover_tests(tutorialtests)
+gtest_discover_tests(adventOfCode_tests)
