@@ -18,8 +18,12 @@ fn day2_problem1_acceptance_test()
     expect_that!(results_sum, eq(8));
 }
 
-//#[cfg(test)]
-//mod day2_problem1_unittests
-//{
-//    use super::*;
-//}
+#[googletest::test]
+fn day2_problem1_game_validround()
+{
+    let input = "Game 1: 3 blue, 1 red, 1 green";
+    let cube_game = day2::Game::new(12,13,14);
+
+    let results = day2::check_possible_games(input.to_string(), cube_game);
+    expect_that!(results, eq(Vec::from([1])));
+}

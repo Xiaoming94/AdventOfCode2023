@@ -1,7 +1,7 @@
 use std::collections::HashMap;
-
+use std::vec::Vec;
 #[derive(Debug, Eq, PartialEq, Hash)]
-pub enum Color
+enum Color
 {
     Red,
     Green,
@@ -26,21 +26,28 @@ impl Game {
         }
     }
 
-    pub fn is_round_possible(&self, round: HashMap<Color, u32>) -> bool
+    fn is_round_possible(&self, round: HashMap<Color, u32>) -> bool
     {
         round.iter().all(|(color, &n)|{
             match color {
                 Color::Red => n <= self.red_cubes,
                 Color::Green => n <= self.green_cubes,
                 Color::Blue => n <= self.blue_cubes,
-                _ => false
             }
         })
     }
 }
 
-pub fn check_possible_games(input: String, game: Game) -> std::vec::Vec<u32>
+fn gameline_to_hashmap(line: String) -> HashMap<Color, u32>
 {
+    HashMap::new()
+}
+
+pub fn check_possible_games(input: String, game: Game) -> Vec<u32>
+{
+    let game_round_strings:Vec<&str> = input.split("\n").collect();
+    let rounds = game_round_strings.iter()
+                                                                         .map(|line| { gameline_to_hashmap(line.to_string()) } );
     Vec::new()
 }
 
@@ -49,14 +56,15 @@ mod unit_tests {
     use std::collections::HashMap;
 
     use crate::day2::{Game, Color};
+    use super::*;
     #[test]
     fn game_init_test()
     {
-        let cube_game = Game::new(1,2,3);
+        Game::new(1,2,3);
     }
 
     #[test]
-    fn is_rount_possible_1redball_test()
+    fn is_round_possible_1redcube_test()
     {
         let cube_game = Game::new(1,2,3);
         let round = HashMap::from([
@@ -66,7 +74,7 @@ mod unit_tests {
     }
     
     #[test]
-    fn is_rount_possible_1greenball_test()
+    fn is_round_possible_1greencube_test()
     {
         let cube_game = Game::new(1,2,3);
         let round = HashMap::from([
@@ -76,7 +84,7 @@ mod unit_tests {
     }
     
     #[test]
-    fn is_rount_possible_1blueball_test()
+    fn is_round_possible_1bluecube_test()
     {
         let cube_game = Game::new(1,2,3);
         let round = HashMap::from([
@@ -86,7 +94,7 @@ mod unit_tests {
     }
     
     #[test]
-    fn is_rount_possible_1of_each_color_test()
+    fn is_round_possible_1of_each_color_test()
     {
         let cube_game = Game::new(1,2,3);
         let round = HashMap::from([
@@ -95,5 +103,28 @@ mod unit_tests {
             (Color::Green, 1)
         ]);
         assert!(cube_game.is_round_possible(round));
+    }
+
+    #[test]
+    fn is_round_possible_2blue_1green_test()
+    {
+        let cube_game = Game::new(1,2,3);
+        let round = HashMap::from([
+            (Color::Blue, 2),
+            (Color::Green, 1)
+        ]);
+        assert!(cube_game.is_round_possible(round));
+    }
+
+    #[test]
+    fn is_round_possible_toomany_red_cubes()
+    {
+        let cube_game = Game::new(1,2,3);
+        let round = HashMap::from([
+            (Color::Blue, 1),
+            (Color::Red, 2),
+            (Color::Green, 1)
+        ]);
+        assert!(!cube_game.is_round_possible(round));
     }
 }
