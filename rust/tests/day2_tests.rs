@@ -17,3 +17,9 @@ fn day2_problem1_acceptance_test()
     expect_that!(results, eq(vec![1u32, 2u32, 5u32]));
     expect_that!(results_sum, eq(8));
 }
+
+//#[cfg(test)]
+//mod day2_problem1_unittests
+//{
+//    use super::*;
+//}
