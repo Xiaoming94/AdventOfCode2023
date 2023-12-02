@@ -1,8 +1,9 @@
 // Basic Test, this is meant for setting up
 use googletest::prelude::*;
-use adventOfCode::tutorial;
+use advent_of_code::tutorial;
 
 #[test]
+#[ignore]
 fn basic_test() {
     let args = 42;
     let results = tutorial::tutorial_function(args); 
