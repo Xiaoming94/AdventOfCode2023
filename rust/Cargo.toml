@@ -13,3 +13,10 @@ name = "day2_exec"
 test = true
 bench = true
 path = "src/day2_main.rs"
+
+
+[[bin]]
+name = "day3_exec"
+test = true
+bench = true
+path = "src/day3_main.rs"
