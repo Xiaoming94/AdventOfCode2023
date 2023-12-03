@@ -31,7 +31,7 @@ mod day3_acceptance_tests {
 mod day3_problem1_verification_tests {
     use super::*;
 
-    #[test]
+    #[googletest::test]
     fn tc_1line_no_symbols() {
         let input = "...42....";
 
@@ -39,7 +39,7 @@ mod day3_problem1_verification_tests {
         expect_that!(results.iter().sum::<u32>(), eq(0));
     }
     
-    #[test]
+    #[googletest::test]
     fn tc_1line_one_symbol() {
         let input = "...42*...";
 
@@ -47,7 +47,7 @@ mod day3_problem1_verification_tests {
         expect_that!(results.iter().sum::<u32>(), eq(42));
     }
     
-    #[test]
+    #[googletest::test]
     fn tc_1line_one_symbol_threechardigit() {
         let input = "...142*...";
 
@@ -55,7 +55,7 @@ mod day3_problem1_verification_tests {
         expect_that!(results.iter().sum::<u32>(), eq(142));
     }
  
-    #[test]
+    #[googletest::test]
     fn tc_1line_symbol_toofar() {
         let input = "...142.*..";
 
@@ -63,7 +63,7 @@ mod day3_problem1_verification_tests {
         expect_that!(results.iter().sum::<u32>(), eq(142));
     }
  
-    #[test]
+    #[googletest::test]
     fn tc_1line_symbol_before() {
         let input = "...*42...";
 
