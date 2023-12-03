@@ -80,7 +80,7 @@ mod day2_problem1_tests {
     fn tc_2games_validrounds()
     {
         let input = "Game 1: 3 blue, 1 red, 1 green; 5 red, 4 green\n\
-                        Game 2: 5 blue, 10 red";
+                     Game 2: 5 blue, 10 red";
         let cube_game = day2::Game::new(12,13,14);
 
         let results = day2::check_possible_games(input, &cube_game);
@@ -91,7 +91,7 @@ mod day2_problem1_tests {
     fn tc_2games_1invalidgame()
     {
         let input = "Game 1: 3 blue, 1 red, 1 green; 5 red, 4 green\n\
-                        Game 2: 5 blue, 20 red";
+                     Game 2: 5 blue, 20 red";
         let cube_game = day2::Game::new(12,13,14);
 
         let results = day2::check_possible_games(input, &cube_game);
@@ -132,7 +132,7 @@ mod day2_problem2_tests {
     #[googletest::test]
     fn tc_1game_2rounds_minimum_10cubes()
     {
-        let input = "Game 1: 2 blue, 3 red, 4 green; 4 red, 4green";
+        let input = "Game 1: 2 blue, 3 red, 4 green; 4 red, 4 green";
 
         let results = day2::calc_power_minimum_cubes(input);
         expect_that!(results, eq(vec![32]));
