@@ -26,7 +26,6 @@ mod day2_acceptance_tests {
     #[ignore]
     fn problem2_test()
     {
-        let cube_game = day2::Game::new(12u32,13u32,14u32);
         let results = day2::calc_power_minimum_balls(PROBLEM_INPUT);
         let results_sum = results.iter().fold(0, |accu, &n| {accu + n});
         expect_that!(results, eq(vec![48u32, 12u32, 1560u32, 630u32, 36u32]));
@@ -35,7 +34,7 @@ mod day2_acceptance_tests {
 }
 
 #[cfg(test)]
-mod tc_tests{
+mod day2_problem1_tests{
     use super::*;
     #[googletest::test]
     fn tc_1game_1bluecube()
