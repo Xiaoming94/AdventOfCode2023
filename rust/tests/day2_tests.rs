@@ -13,7 +13,7 @@ fn day2_problem1_acceptance_test()
                                 Game 5: 6 red, 1 blue, 3 green; 2 blue, 1 red, 2 green";
     
     let cube_game = day2::Game::new(12u32,13u32,14u32);
-    let results = day2::check_possible_games(problem1_input.to_string(), cube_game);
+    let results = day2::check_possible_games(problem1_input, &cube_game);
     let results_sum = results.iter().fold(0, |accu, &n| {accu + n});
     expect_that!(results, eq(vec![1u32, 2u32, 5u32]));
     expect_that!(results_sum, eq(8));
@@ -25,7 +25,7 @@ fn day2_problem1_1game_1bluecube()
     let input = "Game 1: 1 blue";
     let cube_game = day2::Game::new(12,13,14);
 
-    let results = day2::check_possible_games(input.to_string(), cube_game);
+    let results = day2::check_possible_games(input, &cube_game);
     expect_that!(results, eq(vec![1]));
 }
 
@@ -35,7 +35,7 @@ fn day2_problem1_1game_validround()
     let input = "Game 1: 3 blue, 1 red, 1 green";
     let cube_game = day2::Game::new(12,13,14);
 
-    let results = day2::check_possible_games(input.to_string(), cube_game);
+    let results = day2::check_possible_games(input, &cube_game);
     expect_that!(results, eq(vec![1]));
 }
 
@@ -45,7 +45,7 @@ fn day2_problem1_1game_invalidround()
     let input = "Game 1: 3 blue, 14 red, 1 green";
     let cube_game = day2::Game::new(12,13,14);
 
-    let results = day2::check_possible_games(input.to_string(), cube_game);
+    let results = day2::check_possible_games(input, &cube_game);
     expect_that!(results, eq(NO_VALID_GAMES));
 }
 
@@ -55,7 +55,7 @@ fn day2_problem1_1game_2validrounds()
     let input = "Game 1: 3 blue, 1 red, 1 green; 5 red, 4 green";
     let cube_game = day2::Game::new(12,13,14);
 
-    let results = day2::check_possible_games(input.to_string(), cube_game);
+    let results = day2::check_possible_games(input, &cube_game);
     expect_that!(results, eq(vec![1]));
 }
 
@@ -65,7 +65,7 @@ fn day2_problem1_1game_1valid_1invalidrounds()
     let input = "Game 1: 3 blue, 1 red, 1 green; 14 red, 4 green";
     let cube_game = day2::Game::new(12,13,14);
 
-    let results = day2::check_possible_games(input.to_string(), cube_game);
+    let results = day2::check_possible_games(input, &cube_game);
     expect_that!(results, eq(NO_VALID_GAMES));
 }
 
@@ -76,7 +76,7 @@ fn day2_problem1_2games_validrounds()
                     Game 2: 5 blue, 10 red";
     let cube_game = day2::Game::new(12,13,14);
 
-    let results = day2::check_possible_games(input.to_string(), cube_game);
+    let results = day2::check_possible_games(input, &cube_game);
     expect_that!(results, eq(vec![1,2]));
 }
 
@@ -87,6 +87,6 @@ fn day2_problem1_2games_1invalidgame()
                     Game 2: 5 blue, 20 red";
     let cube_game = day2::Game::new(12,13,14);
 
-    let results = day2::check_possible_games(input.to_string(), cube_game);
+    let results = day2::check_possible_games(input, &cube_game);
     expect_that!(results, eq(vec![1]));
 }

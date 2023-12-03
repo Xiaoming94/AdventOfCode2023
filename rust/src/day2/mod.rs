@@ -42,7 +42,7 @@ impl Game {
     }
 }
 
-fn to_gameround(round_str: String) -> GameRound
+fn to_gameround(round_str: &str) -> GameRound
 {
     round_str.split(", ")
              .map(|cubes_color| 
@@ -59,22 +59,22 @@ fn to_gameround(round_str: String) -> GameRound
                   }).collect::<GameRound>()
 }
 
-fn gameline_to_roundsvec(line: String) -> Vec<GameRound>
+fn gameline_to_roundsvec(line: &str) -> Vec<GameRound>
 {
     let game_round_split: Vec<&str> = line.split(":").collect();
     let rounds_str = game_round_split[1].to_string();
     rounds_str.split(";")
-              .map(|round_str| to_gameround(round_str.to_string()))
+              .map(|round_str| to_gameround(round_str))
               .collect()
 }
 
-pub fn check_possible_games(input: String, game: Game) -> Vec<u32>
+pub fn check_possible_games(input: &str, game: &Game) -> Vec<u32>
 {
     let game_round_strings:Vec<&str> = input.split("\n").collect();
     let mut valid_games = Vec::<u32>::new();
     let mut index = 1u32;
     for g in game_round_strings.iter()
-                               .map(|line| { gameline_to_roundsvec(line.to_string()) } )
+                               .map(|line| { gameline_to_roundsvec(line) } )
     {
         if g.iter().all(|round| {game.is_round_possible(round)})
         {
