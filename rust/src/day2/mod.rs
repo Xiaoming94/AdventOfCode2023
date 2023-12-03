@@ -48,3 +48,8 @@ pub fn check_possible_games(input: &str, game: &Game) -> Vec<u32>
     }
     valid_games
 }
+
+pub fn calc_power_minimum_balls(input: &str) -> Vec<u32>
+{
+    Vec::new()
+}

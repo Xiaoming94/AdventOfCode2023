@@ -21,6 +21,17 @@ mod day2_acceptance_tests {
         expect_that!(results, eq(vec![1u32, 2u32, 5u32]));
         expect_that!(results_sum, eq(8));
     }
+
+    #[googletest::test]
+    #[ignore]
+    fn problem2_test()
+    {
+        let cube_game = day2::Game::new(12u32,13u32,14u32);
+        let results = day2::calc_power_minimum_balls(PROBLEM_INPUT);
+        let results_sum = results.iter().fold(0, |accu, &n| {accu + n});
+        expect_that!(results, eq(vec![48u32, 12u32, 1560u32, 630u32, 36u32]));
+        expect_that!(results_sum, eq(2286));
+    }
 }
 
 #[googletest::test]
