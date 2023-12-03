@@ -33,9 +33,9 @@ impl Game {
     {
         round.iter().all(|(color, &n)|{
             match color {
-                Color::Red => n <= self.red_cubes,
-                Color::Green => n <= self.green_cubes,
-                Color::Blue => n <= self.blue_cubes,
+                Color::Red       => n <= self.red_cubes,
+                Color::Green     => n <= self.green_cubes,
+                Color::Blue      => n <= self.blue_cubes,
                 Color::Undefined => false
             }
         })
