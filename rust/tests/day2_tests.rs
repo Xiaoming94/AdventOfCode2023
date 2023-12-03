@@ -89,5 +89,5 @@ fn day2_problem1_2games_1invalidgame()
     let cube_game = day2::Game::new(12,13,14);
 
     let results = day2::check_possible_games(input.to_string(), cube_game);
-    expect_that!(results, eq(vec![1,2]));
+    expect_that!(results, eq(vec![1]));
 }
