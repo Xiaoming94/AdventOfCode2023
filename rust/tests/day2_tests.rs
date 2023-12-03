@@ -4,7 +4,6 @@ use advent_of_code::day2;
 const NO_VALID_GAMES: Vec<u32> = Vec::<u32>::new();
 
 #[googletest::test]
-#[ignore]
 fn day2_problem1_acceptance_test()
 {
     let problem1_input = "Game 1: 3 blue, 4 red; 1 red, 2 green, 6 blue; 2 green\n\
