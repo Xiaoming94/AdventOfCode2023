@@ -26,7 +26,7 @@ mod day2_acceptance_tests {
     #[ignore]
     fn problem2_test()
     {
-        let results = day2::calc_power_minimum_balls(PROBLEM_INPUT);
+        let results = day2::calc_power_minimum_cubes(PROBLEM_INPUT);
         let results_sum = results.iter().fold(0, |accu, &n| {accu + n});
         expect_that!(results, eq(vec![48u32, 12u32, 1560u32, 630u32, 36u32]));
         expect_that!(results_sum, eq(2286));
@@ -107,7 +107,7 @@ mod day2_problem2_tests {
     {
         let input = "Game1: 1 red";
         
-        let results = day2::calc_power_minimum_balls(input);
+        let results = day2::calc_power_minimum_cubes(input);
         expect_that!(results, eq(vec![1]));
     }
 
@@ -115,9 +115,8 @@ mod day2_problem2_tests {
     fn tc_1game_5balls_total()
     {
         let input = "Game 1: 3 blue, 1 red, 1 green";
-        let cube_game = day2::Game::new(12,13,14);
 
-        let results = day2::check_possible_games(input, &cube_game);
+        let results = day2::calc_power_minimum_cubes(input);
         expect_that!(results, eq(vec![3]));
     }
 }
