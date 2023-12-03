@@ -7,3 +7,9 @@ edition = "2021"
 
 [dependencies]
 googletest = "0.10.0"
+
+[[bin]]
+name = "day2_exec"
+test = true
+bench = true
+path = "src/day2_main.rs"
