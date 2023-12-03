@@ -32,6 +32,11 @@ fn gameline_to_roundsvec(line: &str) -> Vec<GameRound>
               .collect()
 }
 
+fn calc_minimum_cubes(game_rounds: Vec<GameRound>) -> u32
+{
+    0
+}
+
 pub fn check_possible_games(input: &str, game: &Game) -> Vec<u32>
 {
     let game_round_strings:Vec<&str> = input.split("\n").collect();
@@ -49,7 +54,8 @@ pub fn check_possible_games(input: &str, game: &Game) -> Vec<u32>
     valid_games
 }
 
-pub fn calc_power_minimum_balls(input: &str) -> Vec<u32>
+pub fn calc_power_minimum_cubes(input: &str) -> Vec<u32>
 {
-    Vec::new()
+    let game_rounds = gameline_to_roundsvec(input);
+    vec![calc_minimum_cubes(game_rounds)]
 }
