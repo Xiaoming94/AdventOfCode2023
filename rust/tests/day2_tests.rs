@@ -23,7 +23,6 @@ mod day2_acceptance_tests {
     }
 
     #[googletest::test]
-    #[ignore]
     fn problem2_test()
     {
         let results = day2::calc_power_minimum_cubes(PROBLEM_INPUT);
@@ -136,5 +135,25 @@ mod day2_problem2_tests {
 
         let results = day2::calc_power_minimum_cubes(input);
         expect_that!(results, eq(vec![32]));
+    }
+
+    #[googletest::test]
+    fn tc_2games_1round_each()
+    {
+        let input = "Game 1: 2 blue, 3 red, 4 green\n\
+                     Game 2: 3 blue, 1 red, 3 green";
+        
+        let results = day2::calc_power_minimum_cubes(input);
+        expect_that!(results, eq(vec![24, 9]))
+    }
+    
+    #[googletest::test]
+    fn tc_2games_2roundsfirst_1roundsecond()
+    {
+        let input = "Game 1: 2 blue, 3 red, 4 green; 4 red, 4 green\n\
+                     Game 2: 3 blue, 1 red, 3 green";
+        
+        let results = day2::calc_power_minimum_cubes(input);
+        expect_that!(results, eq(vec![32, 9]))
     }
 }
