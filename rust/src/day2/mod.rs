@@ -1,4 +1,4 @@
-use std::vec::Vec;
+use std::{vec::Vec, collections::HashMap, cmp::max};
 
 pub mod game; 
 
@@ -32,9 +32,21 @@ fn gameline_to_roundsvec(line: &str) -> Vec<GameRound>
               .collect()
 }
 
-fn calc_minimum_cubes(game_rounds: Vec<GameRound>) -> u32
+fn calc_minimum_cubes(game_rounds: Vec<GameRound>) -> Vec<u32>
 {
-    0
+    let min_games = game_rounds.iter()
+                               .fold(HashMap::new(),
+                                     |mut game_with_mins, game_round| {
+                                         {
+                                            game_round.iter().for_each(|(color, n_cubes)|
+                                            {
+                                               game_with_mins.entry(color).and_modify(|current_val| *current_val=max(*current_val, n_cubes))
+                                                                          .or_insert(n_cubes);
+                                            });
+                                         }
+                                         game_with_mins
+                                     });
+    min_games.values().cloned().cloned().collect()
 }
 
 pub fn check_possible_games(input: &str, game: &Game) -> Vec<u32>
@@ -57,5 +69,5 @@ pub fn check_possible_games(input: &str, game: &Game) -> Vec<u32>
 pub fn calc_power_minimum_cubes(input: &str) -> Vec<u32>
 {
     let game_rounds = gameline_to_roundsvec(input);
-    vec![calc_minimum_cubes(game_rounds)]
+    vec![calc_minimum_cubes(game_rounds).iter().fold(1, |prod, n_cubes| prod * n_cubes)]
 }

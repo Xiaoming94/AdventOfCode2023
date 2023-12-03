@@ -112,11 +112,29 @@ mod day2_problem2_tests {
     }
 
     #[googletest::test]
-    fn tc_1game_5balls_total()
+    fn tc_1game_5cubes_total()
     {
         let input = "Game 1: 3 blue, 1 red, 1 green";
 
         let results = day2::calc_power_minimum_cubes(input);
         expect_that!(results, eq(vec![3]));
+    }
+    
+    #[googletest::test]
+    fn tc_1game_9cubes_total()
+    {
+        let input = "Game 1: 2 blue, 3 red, 4 green";
+
+        let results = day2::calc_power_minimum_cubes(input);
+        expect_that!(results, eq(vec![24]));
+    }
+    
+    #[googletest::test]
+    fn tc_1game_2rounds_minimum_10cubes()
+    {
+        let input = "Game 1: 2 blue, 3 red, 4 green; 4 red, 4green";
+
+        let results = day2::calc_power_minimum_cubes(input);
+        expect_that!(results, eq(vec![32]));
     }
 }
