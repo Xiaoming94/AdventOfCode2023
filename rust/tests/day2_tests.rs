@@ -34,7 +34,7 @@ mod day2_acceptance_tests {
 }
 
 #[cfg(test)]
-mod day2_problem1_tests{
+mod day2_problem1_tests {
     use super::*;
     #[googletest::test]
     fn tc_1game_1bluecube()
@@ -64,16 +64,6 @@ mod day2_problem1_tests{
 
         let results = day2::check_possible_games(input, &cube_game);
         expect_that!(results, eq(NO_VALID_GAMES));
-    }
-
-    #[googletest::test]
-    fn tc_1game_2validrounds()
-    {
-        let input = "Game 1: 3 blue, 1 red, 1 green; 5 red, 4 green";
-        let cube_game = day2::Game::new(12,13,14);
-
-        let results = day2::check_possible_games(input, &cube_game);
-        expect_that!(results, eq(vec![1]));
     }
 
     #[googletest::test]
@@ -108,3 +98,26 @@ mod day2_problem1_tests{
         expect_that!(results, eq(vec![1]));
     }
 } 
+
+#[cfg(test)]
+mod day2_problem2_tests {
+    use super::*;
+    #[googletest::test]
+    fn tc_1game_1redcube ()
+    {
+        let input = "Game1: 1 red";
+        
+        let results = day2::calc_power_minimum_balls(input);
+        expect_that!(results, eq(vec![1]));
+    }
+
+    #[googletest::test]
+    fn tc_1game_5balls_total()
+    {
+        let input = "Game 1: 3 blue, 1 red, 1 green";
+        let cube_game = day2::Game::new(12,13,14);
+
+        let results = day2::check_possible_games(input, &cube_game);
+        expect_that!(results, eq(vec![3]));
+    }
+}
