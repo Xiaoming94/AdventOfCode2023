@@ -1,6 +1,6 @@
-use std::{collections::HashMap, arch::x86_64::__cpuid};
+use std::collections::BTreeMap;
 
-type Pos = (u32, u32);
+type Pos = (i32, i32);
 
 #[derive(Debug, Eq, PartialEq)]
 enum SchematicData {
@@ -25,7 +25,8 @@ impl DigitReader {
     
     pub fn read(&mut self, val: &u32)
     {
-        self.value += self.value * 10 + val;
+        self.value = self.value * 10 + val;
+        println!("current read value: {}", self.value);
     }
 
     pub fn part_number_found(&mut self) {
@@ -46,7 +47,7 @@ impl DigitReader {
     
 }
 
-type SchematicType = HashMap<Pos, SchematicData>;
+type SchematicType = BTreeMap<Pos, SchematicData>;
 
 fn read_schematic_symbol(sym: char) -> SchematicData
 {
@@ -57,20 +58,32 @@ fn read_schematic_symbol(sym: char) -> SchematicData
     }
 }
 
-fn parse_schematic(schematic: &str) -> HashMap<Pos, SchematicData>
+fn parse_schematic(schematic: &str) -> SchematicType
 {
-    let mut x = 0u32;
+    let mut x = 0;
     schematic.chars().map(
         |c| {
-                let schematic_entry = ((x, 0u32), read_schematic_symbol(c));
+                let schematic_entry = ((x, 0), read_schematic_symbol(c));
                 x += 1;
                 return schematic_entry;
             }).collect::<SchematicType>()
 }
 
-fn is_symbol_closeby(x: &u32, y: &u32, schematic: &SchematicType) -> bool
+fn is_symbol_closeby(x: &i32, y: &i32, schematic: &SchematicType) -> bool
 {
-    false
+    let dxs = vec![1,-1];
+    dxs.iter().any(
+        |dx| {
+            if let Some(entry) = schematic.get(&(x+dx, *y)) {
+                    match entry {
+                        SchematicData::Symbol => true,
+                        _ => false
+                    }
+            } else {
+                false
+            }
+        }
+    )
 }
 
 fn find_partnumbers_helper(schematic: &SchematicType) -> Vec<u32>
