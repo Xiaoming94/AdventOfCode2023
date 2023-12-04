@@ -68,7 +68,7 @@ mod day3_problem1_verification_tests {
         let input = "...142.*..";
 
         let results = day3::find_partnumbers(input);
-        expect_that!(results.iter().sum::<u32>(), eq(142));
+        expect_that!(results.iter().sum::<u32>(), eq(0));
     }
  
     #[googletest::test]
