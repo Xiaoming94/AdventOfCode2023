@@ -6,7 +6,6 @@ mod day3_acceptance_tests {
     use super::*;
 
     #[googletest::test]
-    #[ignore]
     fn problem1_test()
     {
         let schematic = "467..114..\n\

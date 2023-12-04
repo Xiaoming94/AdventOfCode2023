@@ -57,7 +57,6 @@ impl DigitReader {
     pub fn read(&mut self, val: &u32)
     {
         self.value = self.value * 10 + val;
-        println!("current read value: {}", self.value);
     }
 
     pub fn part_number_found(&mut self) {
@@ -111,7 +110,6 @@ fn is_symbol_closeby(x: &i32, y: &i32, schematic: &SchematicType) -> bool
         |(dx,dy)| {
             let pos = Pos {x: x + dx, y: y + dy};
             if let Some(entry) = schematic.get(&pos) {
-                println!("{:?}", entry);
                 match entry {
                     SchematicData::Symbol => true,
                     _ => false
@@ -152,6 +150,5 @@ fn find_partnumbers_helper(schematic: &SchematicType) -> Vec<u32>
 pub fn find_partnumbers(schematic: &str) -> Vec<u32>
 {
     let parsed_schematic = parse_schematic(schematic);
-    println!("{:?}", parsed_schematic);
     find_partnumbers_helper(&parsed_schematic)
 }
