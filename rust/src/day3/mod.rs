@@ -81,3 +81,7 @@ pub fn find_partnumbers(schematic: &str) -> Vec<u32>
     let parsed_schematic = parse_schematic(schematic);
     find_partnumbers_helper(&parsed_schematic)
 }
+
+pub fn find_gear_ratios(schematic: &str) -> Vec<u32> {
+    Vec::new()
+}

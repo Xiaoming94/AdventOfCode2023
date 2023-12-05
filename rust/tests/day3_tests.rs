@@ -5,25 +5,32 @@ use advent_of_code::day3;
 mod day3_acceptance_tests {
     use super::*;
 
+    const SCHEMATIC: &str = "467..114..\n\
+                             ...*......\n\
+                             ..35..633.\n\
+                             ......#...\n\
+                             617*......\n\
+                             .....+.58.\n\
+                             ..592.....\n\
+                             ......755.\n\
+                             ...$.*....\n\
+                             .664.598..";
     #[googletest::test]
     fn problem1_test()
     {
-        let schematic = "467..114..\n\
-                        ...*......\n\
-                        ..35..633.\n\
-                        ......#...\n\
-                        617*......\n\
-                        .....+.58.\n\
-                        ..592.....\n\
-                        ......755.\n\
-                        ...$.*....\n\
-                        .664.598..";
-        
-        let results = day3::find_partnumbers(&schematic);
+        let results = day3::find_partnumbers(SCHEMATIC);
         let results_sum = results.iter().sum::<u32>();
         expect_that!(results_sum, eq(4361));
     }
 
+    #[googletest::test]
+    #[ignore]
+    fn problem2_test()
+    {
+        let results = day3::find_gear_ratios(SCHEMATIC);
+        let results_sum = results.iter().sum::<u32>();
+        expect_that!(results_sum, eq(467835))
+    }
 }
 
 #[cfg(test)]
