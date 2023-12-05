@@ -122,3 +122,105 @@ mod day3_problem1_verification_tests {
 
     }
 }
+
+#[cfg(test)]
+mod day3_problem2_verification_tests {
+    use super::*;
+
+    #[googletest::test]
+    fn tc_1line_asterix_1number () {
+        let input = "..42*.....";
+
+        let results = day3::find_gear_ratios(input);
+        expect_that! (results.iter().sum::<u32>(), eq(0));
+    }
+
+    #[googletest::test]
+    fn tc_1line_asterix_2numbers () {
+        let input = "..42*2....";
+
+        let results = day3::find_gear_ratios(input);
+        expect_that! (results.iter().sum::<u32>(), eq(84));
+    }
+
+    #[googletest::test]
+    fn tc_1line_asterix_1number_toofar () {
+        let input = "..42*...2.";
+
+        let results = day3::find_gear_ratios(input);
+        expect_that! (results.iter().sum::<u32>(), eq(0));
+    }
+
+    #[googletest::test]
+    fn tc_2lines_asterix_2numbers_same_line () {
+        let input = "..42*2....\n\
+                     ..........";
+
+        let results = day3::find_gear_ratios(input);
+        expect_that! (results.iter().sum::<u32>(), eq(84));
+    }
+ 
+    #[googletest::test]
+    fn tc_2lines_asterix_2numbers_beside_below () {
+        let input = "..42*.....\n\
+                     ....2.....";
+
+        let results = day3::find_gear_ratios(input);
+        expect_that! (results.iter().sum::<u32>(), eq(84));
+    }
+ 
+    #[googletest::test]
+    fn tc_2lines_asterix_2numbers_beside_diag () {
+        let input = "..42*.....\n\
+                     .....2....";
+
+        let results = day3::find_gear_ratios(input);
+        expect_that! (results.iter().sum::<u32>(), eq(84));
+    }
+ 
+    #[googletest::test]
+    fn tc_2lines_asterix_3numbers () {
+        let input = "..42*.....\n\
+                     ...2.4....";
+
+        let results = day3::find_gear_ratios(input);
+        expect_that! (results.iter().sum::<u32>(), eq(0));
+    }
+ 
+    #[googletest::test]
+    fn tc_2lines_2asterix_3numbers () {
+        let input = "..42*...*.\n\
+                     ...2....4.";
+
+        let results = day3::find_gear_ratios(input);
+        expect_that! (results.iter().sum::<u32>(), eq(84));
+    }
+ 
+    #[googletest::test]
+    fn tc_2lines_2asterix_4numbers () {
+        let input = "..42*..6..\n\
+                     ...2...*4.";
+
+        let results = day3::find_gear_ratios(input);
+        expect_that! (results.iter().sum::<u32>(), eq(108));
+    }
+ 
+    #[googletest::test]
+    fn tc_3lines_2asterix_4numbers () {
+        let input = "..21*.....\n\
+                     ...2...*4.\n\
+                     ......6...";
+
+        let results = day3::find_gear_ratios(input);
+        expect_that! (results.iter().sum::<u32>(), eq(108));
+    }
+    
+    fn tc_3lines_1asterix_4numbers () {
+        let input = "..21*.....\n\
+                     ...2...#4.\n\
+                     ......6...";
+
+        let results = day3::find_gear_ratios(input);
+        expect_that! (results.iter().sum::<u32>(), eq(42));
+    }
+}
