@@ -13,16 +13,32 @@ struct Pos {
     y: i32
 }
 
+impl Pos {
+    pub fn new(x: i32, y: i32) -> Self {
+        Pos {
+            x, y
+        }
+    }
+}
+
+impl From<(i32,i32)> for Pos {
+    fn from(arg: (i32, i32)) -> Self {
+       let (x,y) = arg;
+       Pos::new(x, y)
+    }
+}
+
 impl Ord for Pos {
     fn cmp(&self, other: &Self) -> Ordering {
-        if self.y == other.y {
+        if (self.x, self.y) == (other.x, other.y) {
+            Ordering::Equal 
+        }
+        else if self.y == other.y {
             if self.x > other.x {
                 Ordering::Greater
             }
-            else if self.x < other.x {
+            else {
                 Ordering::Less
-            } else {
-                Ordering::Equal
             }
         } else {
             if self.y > other.y {
@@ -66,15 +82,19 @@ impl DigitReader {
     pub fn has_found_part_number(&self) -> bool {
         self.part_number_found
     }
-    pub fn get_digit(&self) -> u32 {
-        self.value
+    pub fn get_digit(&self) -> Option<u32> {
+        if self.value > 0{
+            Some(self.value)
+        }
+        else {
+            None
+        }
     }
 
     pub fn reset(&mut self) {
         self.value = 0;
         self.part_number_found = false;
-    }
-    
+    } 
 }
 
 type SchematicType = BTreeMap<Pos, SchematicData>;
@@ -95,7 +115,7 @@ fn parse_schematic(schematic: &str) -> SchematicType
         let mut x = 0;
         schematic_line.chars()
                       .for_each( |c| {
-            schem_map.insert(Pos {x: x, y: y}, read_schematic_symbol(c));
+            schem_map.insert(Pos::new(x, y), read_schematic_symbol(c));
             x += 1;
         });
         y += 1;
@@ -108,8 +128,7 @@ fn is_symbol_closeby(x: &i32, y: &i32, schematic: &SchematicType) -> bool
     let dxdys = vec![(1,0), (0,1), (1,1), (-1,0), (0,-1), (-1,-1), (-1,1), (1,-1)];
     dxdys.iter().any(
         |(dx,dy)| {
-            let pos = Pos {x: x + dx, y: y + dy};
-            if let Some(entry) = schematic.get(&pos) {
+            if let Some(entry) = schematic.get(&Pos::from((x + dx, y + dy))) {
                 match entry {
                     SchematicData::Symbol => true,
                     _ => false
@@ -127,20 +146,22 @@ fn find_partnumbers_helper(schematic: &SchematicType) -> Vec<u32>
     let mut digit_reader = DigitReader::new();
     let mut part_numbers = Vec::<u32>::new();
     let schematic_copy = schematic.clone();
-    for (pos, schm) in schematic {
+    for (Pos {x, y}, schm) in schematic {
         match schm {
             SchematicData::Digit (val) => {
                 digit_reader.read(val);
-                if is_symbol_closeby(&pos.x, &pos.y,schematic_copy)
+                if is_symbol_closeby(x, y, schematic_copy)
                 {
                     digit_reader.part_number_found();
                 }
             }
             _ => {
-                if digit_reader.has_found_part_number() {
-                    part_numbers.push(digit_reader.get_digit());
+                if let Some(read_value) = digit_reader.get_digit() {
+                    if digit_reader.has_found_part_number() {
+                        part_numbers.push(read_value);
+                    }
+                    digit_reader.reset();
                 }
-                digit_reader.reset();
             }
         };
     } 
