@@ -111,16 +111,18 @@ fn read_schematic_symbol(sym: char) -> SchematicData
 fn parse_schematic(schematic: &str) -> SchematicType
 {
     let mut y = 0;
-    schematic.split("\n").fold( BTreeMap::new(), |mut schem_map, schematic_line| { 
-        let mut x = 0;
-        schematic_line.chars()
-                      .for_each( |c| {
-            schem_map.insert(Pos::new(x, y), read_schematic_symbol(c));
-            x += 1;
-        });
-        y += 1;
-        schem_map
-    })
+    schematic.split("\n")
+             .map(|line| line.to_owned() + ".")
+             .fold( BTreeMap::new(), |mut schem_map, schematic_line| { 
+                let mut x = 0;
+                schematic_line.chars()
+                              .for_each( |c| {
+                    schem_map.insert(Pos::new(x, y), read_schematic_symbol(c));
+                    x += 1;
+                });
+                y += 1;
+                schem_map
+            })
 }
 
 fn is_symbol_closeby(x: &i32, y: &i32, schematic: &SchematicType) -> bool

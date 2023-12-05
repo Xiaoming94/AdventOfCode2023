@@ -104,4 +104,14 @@ mod day3_problem1_verification_tests {
         let results = day3::find_partnumbers(input);
         expect_that!(results.iter().sum::<u32>(), eq(54));
     }
+
+    #[googletest::test]
+    fn tc_2lines_1number_endingat_endl() {
+        let input = ".......42\n\
+                     5...12#..";
+
+        let results = day3::find_partnumbers(input);
+        expect_that!(results.iter().sum::<u32>(), eq(54));
+
+    }
 }
