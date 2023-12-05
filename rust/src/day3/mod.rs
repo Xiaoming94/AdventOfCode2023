@@ -1,110 +1,16 @@
-use std::{collections::BTreeMap, cmp::Ordering};
+use std::collections::BTreeMap;
 
-#[derive(Debug, Eq, PartialEq)]
-enum SchematicData {
-    Dot,
-    Symbol,
-    Digit (u32)
-}
+use self::{types::*, digitreader::DigitReader};
 
-#[derive(Debug, PartialEq, Eq)]
-struct Pos {
-    x: i32,
-    y: i32
-}
-
-impl Pos {
-    pub fn new(x: i32, y: i32) -> Self {
-        Pos {
-            x, y
-        }
-    }
-}
-
-impl From<(i32,i32)> for Pos {
-    fn from(arg: (i32, i32)) -> Self {
-       let (x,y) = arg;
-       Pos::new(x, y)
-    }
-}
-
-impl Ord for Pos {
-    fn cmp(&self, other: &Self) -> Ordering {
-        if (self.x, self.y) == (other.x, other.y) {
-            Ordering::Equal 
-        }
-        else if self.y == other.y {
-            if self.x > other.x {
-                Ordering::Greater
-            }
-            else {
-                Ordering::Less
-            }
-        } else {
-            if self.y > other.y {
-                Ordering::Greater
-            } else {
-                Ordering::Less
-            }
-        }
-    }
-}
-
-impl PartialOrd for Pos {
-    fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
-        Some(self.cmp(other))
-    }
-}
-
-struct DigitReader {
-    value: u32,
-    part_number_found: bool,
-}
-
-impl DigitReader {
-    pub fn new () -> Self
-    {
-        DigitReader {
-            value: 0,
-            part_number_found: false
-        }
-    }
-    
-    pub fn read(&mut self, val: &u32)
-    {
-        self.value = self.value * 10 + val;
-    }
-
-    pub fn part_number_found(&mut self) {
-        self.part_number_found = true;
-    }
-
-    pub fn has_found_part_number(&self) -> bool {
-        self.part_number_found
-    }
-    pub fn get_digit(&self) -> Option<u32> {
-        if self.value > 0{
-            Some(self.value)
-        }
-        else {
-            None
-        }
-    }
-
-    pub fn reset(&mut self) {
-        self.value = 0;
-        self.part_number_found = false;
-    } 
-}
-
-type SchematicType = BTreeMap<Pos, SchematicData>;
+mod types;
+mod digitreader;
 
 fn read_schematic_symbol(sym: char) -> SchematicData
 {
     match sym {
         '.'                     => SchematicData::Dot,
         sym if sym.is_numeric() => SchematicData::Digit(sym.to_digit(10).unwrap()),
-        _                       => SchematicData::Symbol
+        _                       => SchematicData::Symbol (sym)
     }
 }
 
@@ -132,7 +38,7 @@ fn is_symbol_closeby(x: &i32, y: &i32, schematic: &SchematicType) -> bool
         |(dx,dy)| {
             if let Some(entry) = schematic.get(&Pos::from((x + dx, y + dy))) {
                 match entry {
-                    SchematicData::Symbol => true,
+                    SchematicData::Symbol(_) => true,
                     _ => false
                 }
 
