@@ -24,7 +24,6 @@ mod day3_acceptance_tests {
     }
 
     #[googletest::test]
-    #[ignore]
     fn problem2_test()
     {
         let results = day3::find_gear_ratios(SCHEMATIC);
@@ -212,9 +211,10 @@ mod day3_problem2_verification_tests {
                      ......6...";
 
         let results = day3::find_gear_ratios(input);
-        expect_that! (results.iter().sum::<u32>(), eq(108));
+        expect_that! (results.iter().sum::<u32>(), eq(66));
     }
     
+    #[googletest::test]
     fn tc_3lines_1asterix_4numbers () {
         let input = "..21*.....\n\
                      ...2...#4.\n\

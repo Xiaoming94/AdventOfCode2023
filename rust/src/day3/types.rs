@@ -9,7 +9,7 @@ pub(super) enum SchematicData {
     Digit (u32)
 }
 
-#[derive(Debug, PartialEq, Eq)]
+#[derive(Debug, PartialEq, Eq, Hash, Clone, Copy)]
 pub(super) struct Pos {
     pub x: i32,
     pub y: i32
@@ -21,6 +21,21 @@ impl Pos {
             x, y
         }
     }
+
+    pub fn added_pos(&self, dx: i32, dy: i32) -> Self {
+        Pos::new(
+            self.x + dx,
+            self.y + dy,
+        )
+    }    
+    
+    pub fn left(&self) -> Self {
+        self.added_pos(1, 0)
+    }    
+    
+    pub fn right(&self) -> Self {
+        self.added_pos(-1, 0)
+    }    
 }
 
 impl From<(i32,i32)> for Pos {
