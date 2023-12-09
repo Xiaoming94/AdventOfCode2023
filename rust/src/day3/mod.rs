@@ -33,16 +33,12 @@ fn parse_schematic(schematic: &str) -> SchematicType
 
 const OFFSETS: [(i32,i32);8] = [(1,0), (0,1), (1,1), (-1,0), (0,-1), (-1,-1), (-1,1), (1,-1)];
 
-fn is_symbol_closeby(x: &i32, y: &i32, schematic: &SchematicType) -> bool
+fn is_symbol_closeby(pos: &Pos, schematic: &SchematicType) -> bool
 {
     OFFSETS.iter().any(
         |(dx,dy)| {
-            if let Some(entry) = schematic.get(&Pos::from((x + dx, y + dy))) {
-                match entry {
-                    SchematicData::Symbol(_) => true,
-                    _ => false
-                }
-
+            if let Some(SchematicData::Symbol(_)) = schematic.get(&pos.added_pos(*dx, *dy)) {
+                true
             } else {
                 false
             }
@@ -54,12 +50,11 @@ fn find_partnumbers_helper(schematic: &SchematicType) -> Vec<u32>
 {
     let mut digit_reader = DigitReader::new();
     let mut part_numbers = Vec::<u32>::new();
-    let schematic_copy = schematic.clone();
-    for (Pos {x, y}, schm) in schematic {
+    for (pos, schm) in schematic {
         match schm {
             SchematicData::Digit (val) => {
                 digit_reader.read(val);
-                if is_symbol_closeby(x, y, schematic_copy)
+                if is_symbol_closeby(pos, schematic)
                 {
                     digit_reader.part_number_found();
                 }
@@ -115,8 +110,8 @@ fn find_adjacent_numbers(pos: &Pos, schematic: &SchematicType) -> Vec<u32>
     };
 
     let pos_to_read: Vec<Pos> = OFFSETS.iter().filter(|(dx, dy)| is_digit(*dx, *dy))
-                                    .map(|(dx, dy)| (pos.added_pos(*dx, *dy)))
-                                    .collect();
+                                       .map(|(dx, dy)| (pos.added_pos(*dx, *dy)))
+                                       .collect();
     
     read_digits_tm(pos_to_read, schematic)
 }
