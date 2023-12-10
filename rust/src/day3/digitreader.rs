@@ -1,19 +1,17 @@
-pub (super) struct DigitReader {
+pub(super) struct DigitReader {
     value: u32,
     part_number_found: bool,
 }
 
 impl DigitReader {
-    pub fn new () -> Self
-    {
+    pub fn new() -> Self {
         DigitReader {
             value: 0,
-            part_number_found: false
+            part_number_found: false,
         }
     }
-    
-    pub fn read(&mut self, val: &u32)
-    {
+
+    pub fn read(&mut self, val: &u32) {
         self.value = self.value * 10 + val;
     }
 
@@ -28,8 +26,7 @@ impl DigitReader {
     pub fn get_digit(&self) -> Option<u32> {
         if self.value > 0 {
             Some(self.value)
-        }
-        else {
+        } else {
             None
         }
     }
@@ -37,5 +34,5 @@ impl DigitReader {
     pub fn reset(&mut self) {
         self.value = 0;
         self.part_number_found = false;
-    } 
+    }
 }

@@ -5,7 +5,6 @@ use advent_of_code::day4;
 
 #[cfg(test)]
 mod acceptance_tests {
-    
 
     use std::iter::zip;
 
@@ -18,7 +17,7 @@ mod acceptance_tests {
                      Card 4: 41 92 73 84 69 | 59 84 76 51 58  5 54 83\n\
                      Card 5: 87 83 26 28 32 | 88 30 70 12 93 22 82 36\n\
                      Card 6: 31 18 13 56 72 | 74 77 10 23 35 67 36 11";
-        
+
         let results = day4::find_winning_card_scores(input);
         let expected_results = HashMap::from([
             ("Card 1", vec![48, 83, 17, 86]),
@@ -32,10 +31,11 @@ mod acceptance_tests {
         for (result, expected_result) in zip(results.clone(), expected_results) {
             expect_that!(result, eq(expected_result))
         }
-        let results_score = results.values().map(|card_result| 2u32.pow(card_result.len().try_into().unwrap()))
-                                            .sum();
+        let results_score = results
+            .values()
+            .map(|card_result| 2u32.pow(card_result.len().try_into().unwrap()))
+            .sum();
 
         expect_that!(results_score, eq(13u32));
     }
-
 }

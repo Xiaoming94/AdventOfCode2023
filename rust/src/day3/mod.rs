@@ -1,61 +1,63 @@
 use std::collections::{BTreeMap, HashMap};
 
-use self::{types::*, digitreader::DigitReader};
+use self::{digitreader::DigitReader, types::*};
 
-mod types;
 mod digitreader;
+mod types;
 
-fn read_schematic_symbol(sym: char) -> SchematicData
-{
+fn read_schematic_symbol(sym: char) -> SchematicData {
     match sym {
-        '.'                     => SchematicData::Dot,
+        '.' => SchematicData::Dot,
         sym if sym.is_numeric() => SchematicData::Digit(sym.to_digit(10).unwrap()),
-        _                       => SchematicData::Symbol (sym)
+        _ => SchematicData::Symbol(sym),
     }
 }
 
-fn parse_schematic(schematic: &str) -> SchematicType
-{
+fn parse_schematic(schematic: &str) -> SchematicType {
     let mut y = 0;
-    schematic.split("\n")
-             .map(|line| line.to_owned() + ".")
-             .fold( BTreeMap::new(), |mut schem_map, schematic_line| { 
-                let mut x = 0;
-                schematic_line.chars()
-                              .for_each( |c| {
-                    schem_map.insert(Pos::new(x, y), read_schematic_symbol(c));
-                    x += 1;
-                });
-                y += 1;
-                schem_map
-            })
+    schematic
+        .split("\n")
+        .map(|line| line.to_owned() + ".")
+        .fold(BTreeMap::new(), |mut schem_map, schematic_line| {
+            let mut x = 0;
+            schematic_line.chars().for_each(|c| {
+                schem_map.insert(Pos::new(x, y), read_schematic_symbol(c));
+                x += 1;
+            });
+            y += 1;
+            schem_map
+        })
 }
 
-const OFFSETS: [(i32,i32);8] = [(1,0), (0,1), (1,1), (-1,0), (0,-1), (-1,-1), (-1,1), (1,-1)];
+const OFFSETS: [(i32, i32); 8] = [
+    (1, 0),
+    (0, 1),
+    (1, 1),
+    (-1, 0),
+    (0, -1),
+    (-1, -1),
+    (-1, 1),
+    (1, -1),
+];
 
-fn is_symbol_closeby(pos: &Pos, schematic: &SchematicType) -> bool
-{
-    OFFSETS.iter().any(
-        |(dx,dy)| {
-            if let Some(SchematicData::Symbol(_)) = schematic.get(&pos.added_pos(*dx, *dy)) {
-                true
-            } else {
-                false
-            }
+fn is_symbol_closeby(pos: &Pos, schematic: &SchematicType) -> bool {
+    OFFSETS.iter().any(|(dx, dy)| {
+        if let Some(SchematicData::Symbol(_)) = schematic.get(&pos.added_pos(*dx, *dy)) {
+            true
+        } else {
+            false
         }
-    )
+    })
 }
 
-fn find_partnumbers_helper(schematic: &SchematicType) -> Vec<u32>
-{
+fn find_partnumbers_helper(schematic: &SchematicType) -> Vec<u32> {
     let mut digit_reader = DigitReader::new();
     let mut part_numbers = Vec::<u32>::new();
     for (pos, schm) in schematic {
         match schm {
-            SchematicData::Digit (val) => {
+            SchematicData::Digit(val) => {
                 digit_reader.read(val);
-                if is_symbol_closeby(pos, schematic)
-                {
+                if is_symbol_closeby(pos, schematic) {
                     digit_reader.part_number_found();
                 }
             }
@@ -68,26 +70,31 @@ fn find_partnumbers_helper(schematic: &SchematicType) -> Vec<u32>
                 }
             }
         };
-    } 
+    }
     part_numbers
 }
 
 // TURING MACHINE SOLUTION...
-fn read_digits_tm(pos_to_read: Vec<Pos>, schematic: &SchematicType) -> Vec<u32>
-{
-    type PosToReadType = HashMap<Pos,bool>;
+fn read_digits_tm(pos_to_read: Vec<Pos>, schematic: &SchematicType) -> Vec<u32> {
+    type PosToReadType = HashMap<Pos, bool>;
     let mut position_is_read: PosToReadType = pos_to_read.iter().map(|pos| (*pos, false)).collect();
     let mut digits = Vec::new();
     let mut digit_reader = DigitReader::new();
     for mut pos in pos_to_read {
         if let Some(false) = position_is_read.get(&pos) {
             while let Some(SchematicData::Digit(_)) = schematic.get(&pos.right()) {
-                position_is_read.entry(pos).and_modify(|b| *b = true ).or_insert(true);
+                position_is_read
+                    .entry(pos)
+                    .and_modify(|b| *b = true)
+                    .or_insert(true);
                 pos = pos.right();
             }
             while let Some(SchematicData::Digit(val)) = schematic.get(&pos) {
                 digit_reader.read(val);
-                position_is_read.entry(pos).and_modify(|b| *b = true ).or_insert(true);
+                position_is_read
+                    .entry(pos)
+                    .and_modify(|b| *b = true)
+                    .or_insert(true);
                 pos = pos.left();
             }
             if let Some(read_digit) = digit_reader.get_digit() {
@@ -99,8 +106,7 @@ fn read_digits_tm(pos_to_read: Vec<Pos>, schematic: &SchematicType) -> Vec<u32>
     digits
 }
 
-fn find_adjacent_numbers(pos: &Pos, schematic: &SchematicType) -> Vec<u32>
-{
+fn find_adjacent_numbers(pos: &Pos, schematic: &SchematicType) -> Vec<u32> {
     let is_digit = |dx: i32, dy: i32| -> bool {
         if let Some(SchematicData::Digit(_)) = schematic.get(&pos.added_pos(dx, dy)) {
             true
@@ -109,15 +115,16 @@ fn find_adjacent_numbers(pos: &Pos, schematic: &SchematicType) -> Vec<u32>
         }
     };
 
-    let pos_to_read: Vec<Pos> = OFFSETS.iter().filter(|(dx, dy)| is_digit(*dx, *dy))
-                                       .map(|(dx, dy)| (pos.added_pos(*dx, *dy)))
-                                       .collect();
-    
+    let pos_to_read: Vec<Pos> = OFFSETS
+        .iter()
+        .filter(|(dx, dy)| is_digit(*dx, *dy))
+        .map(|(dx, dy)| (pos.added_pos(*dx, *dy)))
+        .collect();
+
     read_digits_tm(pos_to_read, schematic)
 }
 
-fn find_gear_ratios_helper(schematic: &SchematicType) -> Vec<u32>
-{
+fn find_gear_ratios_helper(schematic: &SchematicType) -> Vec<u32> {
     let is_asterix = move |schem: &SchematicData| -> bool {
         if let SchematicData::Symbol('*') = schem {
             true
@@ -126,15 +133,16 @@ fn find_gear_ratios_helper(schematic: &SchematicType) -> Vec<u32>
         }
     };
 
-    schematic.iter().filter(|(_,schem)| is_asterix(*schem))
-                    .map(|(pos,_)| find_adjacent_numbers(pos, schematic))
-                    .filter(|adjacent_nums| adjacent_nums.len() == 2)
-                    .map(|gear_numbers| gear_numbers.iter().product())
-                    .collect()
+    schematic
+        .iter()
+        .filter(|(_, schem)| is_asterix(*schem))
+        .map(|(pos, _)| find_adjacent_numbers(pos, schematic))
+        .filter(|adjacent_nums| adjacent_nums.len() == 2)
+        .map(|gear_numbers| gear_numbers.iter().product())
+        .collect()
 }
 
-pub fn find_partnumbers(schematic: &str) -> Vec<u32>
-{
+pub fn find_partnumbers(schematic: &str) -> Vec<u32> {
     let parsed_schematic = parse_schematic(schematic);
     find_partnumbers_helper(&parsed_schematic)
 }

@@ -1,5 +1,5 @@
-use googletest::prelude::*;
 use advent_of_code::day3;
+use googletest::prelude::*;
 
 #[cfg(test)]
 mod day3_acceptance_tests {
@@ -16,16 +16,14 @@ mod day3_acceptance_tests {
                              ...$.*....\n\
                              .664.598..";
     #[googletest::test]
-    fn problem1_test()
-    {
+    fn problem1_test() {
         let results = day3::find_partnumbers(SCHEMATIC);
         let results_sum = results.iter().sum::<u32>();
         expect_that!(results_sum, eq(4361));
     }
 
     #[googletest::test]
-    fn problem2_test()
-    {
+    fn problem2_test() {
         let results = day3::find_gear_ratios(SCHEMATIC);
         let results_sum = results.iter().sum::<u32>();
         expect_that!(results_sum, eq(467835))
@@ -43,7 +41,7 @@ mod day3_problem1_verification_tests {
         let results = day3::find_partnumbers(input);
         expect_that!(results.iter().sum::<u32>(), eq(0));
     }
-    
+
     #[googletest::test]
     fn tc_1line_one_symbol() {
         let input = "...42*...";
@@ -51,7 +49,7 @@ mod day3_problem1_verification_tests {
         let results = day3::find_partnumbers(input);
         expect_that!(results.iter().sum::<u32>(), eq(42));
     }
-    
+
     #[googletest::test]
     fn tc_1line_one_symbol_2_numbers() {
         let input = "...4*6...";
@@ -59,7 +57,7 @@ mod day3_problem1_verification_tests {
         let results = day3::find_partnumbers(input);
         expect_that!(results.iter().sum::<u32>(), eq(10));
     }
-    
+
     #[googletest::test]
     fn tc_1line_one_symbol_threechardigit() {
         let input = "...142*...";
@@ -67,7 +65,7 @@ mod day3_problem1_verification_tests {
         let results = day3::find_partnumbers(input);
         expect_that!(results.iter().sum::<u32>(), eq(142));
     }
- 
+
     #[googletest::test]
     fn tc_1line_symbol_toofar() {
         let input = "...142.*..";
@@ -75,7 +73,7 @@ mod day3_problem1_verification_tests {
         let results = day3::find_partnumbers(input);
         expect_that!(results.iter().sum::<u32>(), eq(0));
     }
- 
+
     #[googletest::test]
     fn tc_1line_symbol_before() {
         let input = "...*42...";
@@ -118,7 +116,6 @@ mod day3_problem1_verification_tests {
 
         let results = day3::find_partnumbers(input);
         expect_that!(results.iter().sum::<u32>(), eq(54));
-
     }
 }
 
@@ -127,100 +124,100 @@ mod day3_problem2_verification_tests {
     use super::*;
 
     #[googletest::test]
-    fn tc_1line_asterix_1number () {
+    fn tc_1line_asterix_1number() {
         let input = "..42*.....";
 
         let results = day3::find_gear_ratios(input);
-        expect_that! (results.iter().sum::<u32>(), eq(0));
+        expect_that!(results.iter().sum::<u32>(), eq(0));
     }
 
     #[googletest::test]
-    fn tc_1line_asterix_2numbers () {
+    fn tc_1line_asterix_2numbers() {
         let input = "..42*2....";
 
         let results = day3::find_gear_ratios(input);
-        expect_that! (results.iter().sum::<u32>(), eq(84));
+        expect_that!(results.iter().sum::<u32>(), eq(84));
     }
 
     #[googletest::test]
-    fn tc_1line_asterix_1number_toofar () {
+    fn tc_1line_asterix_1number_toofar() {
         let input = "..42*...2.";
 
         let results = day3::find_gear_ratios(input);
-        expect_that! (results.iter().sum::<u32>(), eq(0));
+        expect_that!(results.iter().sum::<u32>(), eq(0));
     }
 
     #[googletest::test]
-    fn tc_2lines_asterix_2numbers_same_line () {
+    fn tc_2lines_asterix_2numbers_same_line() {
         let input = "..42*2....\n\
                      ..........";
 
         let results = day3::find_gear_ratios(input);
-        expect_that! (results.iter().sum::<u32>(), eq(84));
+        expect_that!(results.iter().sum::<u32>(), eq(84));
     }
- 
+
     #[googletest::test]
-    fn tc_2lines_asterix_2numbers_beside_below () {
+    fn tc_2lines_asterix_2numbers_beside_below() {
         let input = "..42*.....\n\
                      ....2.....";
 
         let results = day3::find_gear_ratios(input);
-        expect_that! (results.iter().sum::<u32>(), eq(84));
+        expect_that!(results.iter().sum::<u32>(), eq(84));
     }
- 
+
     #[googletest::test]
-    fn tc_2lines_asterix_2numbers_beside_diag () {
+    fn tc_2lines_asterix_2numbers_beside_diag() {
         let input = "..42*.....\n\
                      .....2....";
 
         let results = day3::find_gear_ratios(input);
-        expect_that! (results.iter().sum::<u32>(), eq(84));
+        expect_that!(results.iter().sum::<u32>(), eq(84));
     }
- 
+
     #[googletest::test]
-    fn tc_2lines_asterix_3numbers () {
+    fn tc_2lines_asterix_3numbers() {
         let input = "..42*.....\n\
                      ...2.4....";
 
         let results = day3::find_gear_ratios(input);
-        expect_that! (results.iter().sum::<u32>(), eq(0));
+        expect_that!(results.iter().sum::<u32>(), eq(0));
     }
- 
+
     #[googletest::test]
-    fn tc_2lines_2asterix_3numbers () {
+    fn tc_2lines_2asterix_3numbers() {
         let input = "..42*...*.\n\
                      ...2....4.";
 
         let results = day3::find_gear_ratios(input);
-        expect_that! (results.iter().sum::<u32>(), eq(84));
+        expect_that!(results.iter().sum::<u32>(), eq(84));
     }
- 
+
     #[googletest::test]
-    fn tc_2lines_2asterix_4numbers () {
+    fn tc_2lines_2asterix_4numbers() {
         let input = "..42*..6..\n\
                      ...2...*4.";
 
         let results = day3::find_gear_ratios(input);
-        expect_that! (results.iter().sum::<u32>(), eq(108));
+        expect_that!(results.iter().sum::<u32>(), eq(108));
     }
- 
+
     #[googletest::test]
-    fn tc_3lines_2asterix_4numbers () {
+    fn tc_3lines_2asterix_4numbers() {
         let input = "..21*.....\n\
                      ...2...*4.\n\
                      ......6...";
 
         let results = day3::find_gear_ratios(input);
-        expect_that! (results.iter().sum::<u32>(), eq(66));
+        expect_that!(results.iter().sum::<u32>(), eq(66));
     }
-    
+
     #[googletest::test]
-    fn tc_3lines_1asterix_4numbers () {
+    fn tc_3lines_1asterix_4numbers() {
         let input = "..21*.....\n\
                      ...2...#4.\n\
                      ......6...";
 
         let results = day3::find_gear_ratios(input);
-        expect_that! (results.iter().sum::<u32>(), eq(42));
+        expect_that!(results.iter().sum::<u32>(), eq(42));
     }
 }
