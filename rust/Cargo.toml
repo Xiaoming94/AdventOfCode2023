@@ -14,9 +14,14 @@ test = true
 bench = true
 path = "src/day2_main.rs"
 
-
 [[bin]]
 name = "day3_exec"
 test = true
 bench = true
 path = "src/day3_main.rs"
+
+[[bin]]
+name = "day4_exec"
+test = true
+bench = true
+path = "src/day4_main.rs"
