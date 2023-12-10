@@ -137,3 +137,81 @@ mod problem1_tests {
         expect_that!(results_score, eq(6));
     }
 }
+
+#[cfg(test)]
+mod problem2_tests {
+    use super::*;
+
+    #[googletest::test]
+    fn tc_1card_0winning() {
+        let input_cards = "Card 1: 1 | 0";
+        let cards_wins = day4::find_winning_card_scores(input_cards);
+        let results = day4::calc_card_pile_size(cards_wins);
+        expect_that!(results, eq(1));
+    }
+    
+    #[googletest::test]
+    fn tc_1card_1winning() {
+        let input_cards = "Card 1: 1 | 1";
+        let cards_wins = day4::find_winning_card_scores(input_cards);
+        let results = day4::calc_card_pile_size(cards_wins);
+        expect_that!(results, eq(1));
+    }
+
+    #[googletest::test]
+    fn tc_2cards_card1_1winning() {
+        let input_cards = "Card 1: 42 | 1 42\n\
+                            Card2: 12 | 1 52";
+        let cards_wins = day4::find_winning_card_scores(input_cards);
+        let results = day4::calc_card_pile_size(cards_wins);
+        expect_that!(results, eq(3));
+    }
+
+    #[googletest::test]
+    fn tc_2cards_card1_0winning() {
+        let input_cards = "Card 1: 42 | 1 41\n\
+                            Card2: 12 | 1 52";
+        let cards_wins = day4::find_winning_card_scores(input_cards);
+        let results = day4::calc_card_pile_size(cards_wins);
+        expect_that!(results, eq(2));
+    }
+
+    #[googletest::test]
+    fn tc_2cards_1winning_each() {
+        let input_cards = "Card 1: 42 | 1 42\n\
+                            Card2: 12 | 12 52";
+        let cards_wins = day4::find_winning_card_scores(input_cards);
+        let results = day4::calc_card_pile_size(cards_wins);
+        expect_that!(results, eq(3));
+    }
+
+    #[googletest::test]
+    fn tc_3cards_card1_2wins() {
+        let input_cards = "Card 1: 42 13 | 1 13 42\n\
+                          Card 2: 12 | 1 52\n\
+                          Card 3: 14 21 | 13 12";
+        let cards_wins = day4::find_winning_card_scores(input_cards);
+        let results = day4::calc_card_pile_size(cards_wins);
+        expect_that!(results, eq(5));
+    }
+    
+    #[googletest::test]
+    fn tc_3cards_card1card2_1win_each() {
+        let input_cards = "Card 1: 42 13 | 1 14 42\n\
+                          Card 2: 12 | 12 52\n\
+                          Card 3: 14 21 | 13 12";
+        let cards_wins = day4::find_winning_card_scores(input_cards);
+        let results = day4::calc_card_pile_size(cards_wins);
+        expect_that!(results, eq(5));
+    }
+
+    #[googletest::test]
+    fn tc_3cards_card1_2wins_card2_1win() {
+        let input_cards = "Card 1: 42 13 | 1 13 42\n\
+                          Card 2: 12 | 12 52\n\
+                          Card 3: 14 21 | 13 12";
+        let cards_wins = day4::find_winning_card_scores(input_cards);
+        let results = day4::calc_card_pile_size(cards_wins);
+        expect_that!(results, eq(6));
+    }
+}

@@ -56,5 +56,5 @@ pub fn calc_score(matching_numbers: &HashSet<u32>) -> u32 {
 }
 
 pub fn calc_card_pile_size(card_with_wins: CardResults) -> u32 {
-    0
+    1
 }
