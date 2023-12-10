@@ -29,9 +29,7 @@ mod acceptance_tests {
         
 
         let results = day4::find_winning_card_scores(input);
-        for (result, expected_result) in zip(results.clone(), expected_results) {
-            expect_that!(result, eq(expected_result));
-        }
+        expect_that!(results, eq(expected_results));
         let results_score: u32 = results
             .values()
             .map(|card_result| 2u32.pow(card_result.len().try_into().unwrap()))
@@ -118,6 +116,19 @@ mod problem1_tests {
         let expected_results: HashMap<&str, Vec<u32>> = HashMap::from([
             ("Card 1", vec![13, 42]),
             ("Card 2", vec![4, 12, 42])
+        ]);
+        let results = day4::find_winning_card_scores(input_cards);
+
+        expect_that!(results, eq(expected_results));
+    }
+    
+    #[googletest::test]
+    fn tc_2cards_3winning_2match_0match() {
+        let input_cards = "Card 1: 1 13 42 4 | 42 13 15 23 51 25 21\n\
+                           Card 2: 4 12 13 42 | 41 7 15 1 5 2 9";
+        let expected_results: HashMap<&str, Vec<u32>> = HashMap::from([
+            ("Card 1", vec![13, 42]),
+            ("Card 2", vec![])
         ]);
         let results = day4::find_winning_card_scores(input_cards);
 
