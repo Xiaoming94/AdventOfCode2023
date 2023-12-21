@@ -53,6 +53,7 @@ mod problem1_tests {
     #[googletest::test]
     fn tc_only_ones () {
         let input = "seeds: 1\n\
+        \n\
                         seed-to-soil map:\n\
                         1 1 1\n\
 \n\
@@ -82,6 +83,7 @@ mod problem1_tests {
     fn tc_single_line_maps_only () {
         //Path 3 -> 6 -> 4 -> 4 -> 4 -> 8 -> 9
         let input = "seeds: 3\n\
+        \n\
                         seed-to-soil map:\n\
                         6 3 12\n\
 \n\
@@ -112,6 +114,7 @@ mod problem1_tests {
         //Path seed 3 -> 6 -> 4 -> 4 -> 4 -> 8 -> 9
         //Path seed 2 -> 2 -> 2 -> 2 -> 2 -> 6 -> 7
         let input = "seeds: 3 2\n\
+        \n\
                         seed-to-soil map:\n\
                         6 3 12\n\
 \n\
@@ -142,6 +145,7 @@ mod problem1_tests {
         //Path seed 3 -> 6 -> 4 -> 13 -> 13 -> 17 -> 17
         //Path seed 2 -> 2 -> 2 -> 2 -> 5 -> 9 -> 9
         let input = "seeds: 3 2\n\
+        \n\
                         seed-to-soil map:\n\
                         6 3 12\n\
 \n\
