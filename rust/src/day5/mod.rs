@@ -1,10 +1,12 @@
-use std::collections::{HashMap, BTreeMap};
+use std::collections::{BTreeMap, HashMap};
 
 type SeedsVec = Vec<u64>;
 
-type SourceDestMap = BTreeMap<u64,(u64,u64)>;
+type SourceDestMap = BTreeMap<u64, (u64, u64)>;
 
 type AlmanacMap = HashMap<AlmanacPath, SourceDestMap>;
+
+type SeedsRange = Vec<(u64, u64)>;
 
 #[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Hash, Copy, Clone)]
 enum LocationType {
@@ -15,7 +17,7 @@ enum LocationType {
     Light,
     Temp,
     Humidity,
-    Location
+    Location,
 }
 
 impl LocationType {
@@ -44,7 +46,7 @@ impl From<&str> for LocationType {
             "temperature" => Self::Temp,
             "humidity" => Self::Humidity,
             "location" => Self::Location,
-            _ => Self::Seed //Should be unreachable
+            _ => Self::Seed, //Should be unreachable
         }
     }
 }
@@ -73,8 +75,8 @@ impl AlmanacPath {
 
 impl From<&str> for AlmanacPath {
     fn from(args: &str) -> Self {
-        if let Some((path_name,_)) = args.split_once(" ") {
-            if let Some((from,to)) = path_name.split_once("-to-") {
+        if let Some((path_name, _)) = args.split_once(" ") {
+            if let Some((from, to)) = path_name.split_once("-to-") {
                 Self::from((LocationType::from(from), LocationType::from(to)))
             } else {
                 Self::new()
@@ -85,36 +87,28 @@ impl From<&str> for AlmanacPath {
     }
 }
 
-impl From <(LocationType, LocationType)> for AlmanacPath {
+impl From<(LocationType, LocationType)> for AlmanacPath {
     fn from(from_to_path: (LocationType, LocationType)) -> Self {
         let (from, to) = from_to_path;
-        AlmanacPath {
-            from, to
-        }
+        AlmanacPath { from, to }
     }
 }
-
 
 fn construct_path_graph(section: &str) -> (AlmanacPath, SourceDestMap) {
     if let Some((section_name, section_ranges)) = section.split_once("\n") {
         let path = AlmanacPath::from(section_name);
-        let source_dest_map = section_ranges
-            .split("\n")
-            .fold(BTreeMap::new(), move |mut sd_map, current_range| {
-                let vranges: Vec<u64> = current_range
-                    .split_whitespace()
-                    .map(|number| number.parse::<u64>().unwrap())
-                    .collect();
-                let (dest_start, source_start, range) = (
-                    vranges[0],
-                    vranges[1],
-                    vranges[2],
-                );
-                sd_map.insert(source_start, (dest_start, range));
-                sd_map
-            });
-            
-        
+        let source_dest_map =
+            section_ranges
+                .split("\n")
+                .fold(BTreeMap::new(), move |mut sd_map, current_range| {
+                    let vranges: Vec<u64> = current_range
+                        .split_whitespace()
+                        .map(|number| number.parse::<u64>().unwrap())
+                        .collect();
+                    let (dest_start, source_start, range) = (vranges[0], vranges[1], vranges[2]);
+                    sd_map.insert(source_start, (dest_start, range));
+                    sd_map
+                });
 
         (path, source_dest_map)
     } else {
@@ -143,10 +137,15 @@ fn parse_seeds(seeds_str: &str) -> SeedsVec {
 fn find_location(seed: u64, the_map: &AlmanacMap) -> u64 {
     let mut current_path = AlmanacPath::new();
     let mut current_location_val = seed;
-    while(current_path != AlmanacPath {from: LocationType::Location, to: LocationType::Location}) {
+    while (current_path
+        != AlmanacPath {
+            from: LocationType::Location,
+            to: LocationType::Location,
+        })
+    {
         if let Some(ranges) = the_map.get(&current_path) {
-            for (source_start, (dest_start, range)) in ranges{
-                if (*source_start..(source_start+range)).contains(&current_location_val) {
+            for (source_start, (dest_start, range)) in ranges {
+                if (*source_start..(source_start + range)).contains(&current_location_val) {
                     let diff = current_location_val - source_start;
                     current_location_val = dest_start + diff;
                     break;
@@ -158,14 +157,41 @@ fn find_location(seed: u64, the_map: &AlmanacMap) -> u64 {
     current_location_val
 }
 
+fn get_seed_ranges(seeds_str: &str) -> SeedsRange {
+    let seeds_int = parse_seeds(seeds_str);
+    seeds_int
+        .chunks(2)
+        .map(|chunk| (chunk[0], chunk[1]))
+        .collect()
+}
+
 pub fn find_lowest_location(input_almanac: &str) -> u64 {
-    println!("==== ENTERING FUNCTION ====");
     if let Some((seeds, table_ranges)) = input_almanac.split_once("\n\n") {
         let seeds_numbers: SeedsVec = parse_seeds(seeds);
         let tables = construct_maps(table_ranges);
         seeds_numbers
             .into_iter()
             .map(|seed| find_location(seed, &tables))
+            .min()
+            .unwrap()
+    } else {
+        1
+    }
+}
+
+pub fn find_lowest_location_v2(input_almanac: &str) -> u64 {
+    if let Some((seeds, table_ranges)) = input_almanac.split_once("\n\n") {
+        let seeds_numbers = get_seed_ranges(seeds);
+        let tables = construct_maps(table_ranges);
+        seeds_numbers
+            .into_iter()
+            .map(|(seed_start, range)| {
+                (seed_start..(seed_start + range))
+                    .into_iter()
+                    .map(|seed| find_location(seed, &tables))
+                    .min()
+                    .unwrap()
+            })
             .min()
             .unwrap()
     } else {

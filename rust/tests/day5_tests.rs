@@ -43,6 +43,12 @@ mod acceptance_tests {
         let result = day5::find_lowest_location(INPUT);
         expect_that!(result, eq(35));
     }
+
+    #[googletest::test]
+    fn problem2() {
+        let result = day5::find_lowest_location_v2(INPUT);
+        expect_that!(result, eq(46));
+    }
 }
 
 #[cfg(test)]
@@ -50,7 +56,7 @@ mod problem1_tests {
     use super::*;
 
     #[googletest::test]
-    fn tc_only_ones () {
+    fn tc_only_ones() {
         let input = "seeds: 1\n\
         \n\
                         seed-to-soil map:\n\
@@ -74,12 +80,12 @@ mod problem1_tests {
                         humidity-to-location map:\n\
                         1 1 1";
 
-       let result = day5::find_lowest_location(input);
-       expect_that!(result, eq(1)); 
+        let result = day5::find_lowest_location(input);
+        expect_that!(result, eq(1));
     }
-    
+
     #[googletest::test]
-    fn tc_single_line_maps_only () {
+    fn tc_single_line_maps_only() {
         //Path 3 -> 6 -> 4 -> 4 -> 4 -> 8 -> 9
         let input = "seeds: 3\n\
         \n\
@@ -104,12 +110,12 @@ mod problem1_tests {
                         humidity-to-location map:\n\
                         3 2 6";
 
-       let result = day5::find_lowest_location(input);
-       expect_that!(result, eq(8)); 
+        let result = day5::find_lowest_location(input);
+        expect_that!(result, eq(8));
     }
 
     #[googletest::test]
-    fn tc_single_line_maps_2_seeds () {
+    fn tc_single_line_maps_2_seeds() {
         //Path seed 3 -> 6 -> 4 -> 4 -> 4 -> 8 -> 9
         //Path seed 2 -> 2 -> 2 -> 2 -> 2 -> 6 -> 7
         let input = "seeds: 3 2\n\
@@ -135,12 +141,12 @@ mod problem1_tests {
                         humidity-to-location map:\n\
                         3 2 6";
 
-       let result = day5::find_lowest_location(input);
-       expect_that!(result, eq(7)); 
+        let result = day5::find_lowest_location(input);
+        expect_that!(result, eq(7));
     }
 
     #[googletest::test]
-    fn tc_2lines_on_some_maps_2_seeds () {
+    fn tc_2lines_on_some_maps_2_seeds() {
         //Path seed 3 -> 6 -> 4 -> 13 -> 13 -> 17 -> 17
         //Path seed 2 -> 2 -> 2 -> 2 -> 5 -> 9 -> 9
         let input = "seeds: 3 2\n\
@@ -168,7 +174,9 @@ mod problem1_tests {
                         humidity-to-location map:\n\
                         3 2 6";
 
-       let result = day5::find_lowest_location(input);
-       expect_that!(result, eq(9)); 
+        let result = day5::find_lowest_location(input);
+        expect_that!(result, eq(9));
     }
 }
+
+//Problem 2 don't got individual crafted cases because the condition is a bit too obnoxious to verify by hand
