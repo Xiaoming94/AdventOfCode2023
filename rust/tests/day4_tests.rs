@@ -147,7 +147,7 @@ mod problem2_tests {
         let results = day4::calc_card_pile_size(input_cards);
         expect_that!(results, eq(1));
     }
-    
+
     #[googletest::test]
     fn tc_1card_1winning() {
         let input_cards = "Card 1: 1 | 1";
@@ -187,7 +187,7 @@ mod problem2_tests {
         let results = day4::calc_card_pile_size(input_cards);
         expect_that!(results, eq(5));
     }
-    
+
     #[googletest::test]
     fn tc_3cards_card1card2_1win_each() {
         let input_cards = "Card 1: 42 13 | 1 14 42\n\

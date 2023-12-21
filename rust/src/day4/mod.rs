@@ -1,9 +1,8 @@
-use std::collections::{BTreeMap, HashSet};
+use std::collections::{BTreeMap, HashMap, HashSet};
 
-
-#[derive(PartialEq, Eq, PartialOrd, Ord)]
+#[derive(PartialEq, Eq, PartialOrd, Ord, Hash, Copy, Clone)]
 enum CardE {
-    Card (u32),
+    Card(u32),
 }
 
 impl From<&String> for CardE {
@@ -11,7 +10,7 @@ impl From<&String> for CardE {
         if let Some(card_num) = card_str.split_whitespace().last() {
             match card_num.parse::<u32>() {
                 Ok(n) => CardE::Card(n),
-                Err(_) => CardE::Card(0)
+                Err(_) => CardE::Card(0),
             }
         } else {
             CardE::Card(0)
@@ -24,7 +23,7 @@ impl From<&str> for CardE {
         if let Some(card_num) = card_str.split_whitespace().last() {
             match card_num.parse::<u32>() {
                 Ok(n) => CardE::Card(n),
-                Err(_) => CardE::Card(0)
+                Err(_) => CardE::Card(0),
             }
         } else {
             CardE::Card(0)
@@ -107,5 +106,11 @@ pub fn calc_score(matching_numbers: &HashSet<u32>) -> u32 {
 }
 
 pub fn calc_card_pile_size(input_cards: &str) -> u32 {
-    1
+    let card_matches = find_matching_cards(input_cards);
+    type CardPileType = HashMap<CardE, u32>;
+    let card_pile: CardPileType = card_matches.iter().map(|(card, _)| (*card, 1)).collect();
+
+    for (CardE::Card(n), matches) in card_matches.iter() {}
+
+    card_pile.values().sum()
 }
