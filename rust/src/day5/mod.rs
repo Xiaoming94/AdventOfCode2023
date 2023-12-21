@@ -6,7 +6,7 @@ type SourceDestMap = HashMap<u32,u32>;
 
 type AlmanacMap = HashMap<AlmanacPath, SourceDestMap>;
 
-#[derive(PartialEq, Eq, PartialOrd, Ord, Hash, Copy, Clone)]
+#[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Hash, Copy, Clone)]
 enum LocationType {
     Seed,
     Soil,
@@ -49,7 +49,7 @@ impl From<&str> for LocationType {
     }
 }
 
-#[derive(PartialEq, Eq, PartialOrd, Ord, Hash)]
+#[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
 struct AlmanacPath {
     from: LocationType,
     to: LocationType,
@@ -98,18 +98,27 @@ impl From <(LocationType, LocationType)> for AlmanacPath {
 fn construct_path_graph(section: &str) -> (AlmanacPath, SourceDestMap) {
     if let Some((section_name, section_ranges)) = section.split_once("\n") {
         let path = AlmanacPath::from(section_name);
-        let vranges: Vec<u32> = section_ranges
-            .split_whitespace()
-            .map(|number| number.parse::<u32>().unwrap())
-            .collect();
-        let (dest_start, source_start, range) = (
-            vranges[0],
-            vranges[1],
-            vranges[2],
-        );
-        let source_dest_map: SourceDestMap = (0..range)
-            .map(|i| (source_start + i, dest_start + i))
-            .collect();
+        let source_dest_map = section_ranges
+            .split("\n")
+            .fold(HashMap::new(), move |mut sd_map, current_range| {
+               
+                let vranges: Vec<u32> = current_range
+                    .split_whitespace()
+                    .map(|number| number.parse::<u32>().unwrap())
+                    .collect();
+                let (dest_start, source_start, range) = (
+                    vranges[0],
+                    vranges[1],
+                    vranges[2],
+                );
+
+                for i in 0..range {
+                    sd_map.insert(source_start + i, dest_start + i);
+                }
+                sd_map
+            });
+            
+        
 
         (path, source_dest_map)
     } else {
@@ -139,6 +148,8 @@ fn find_location(seed: u32, the_map: &AlmanacMap) -> u32 {
     let mut current_path = AlmanacPath::new();
     let mut current_location_val = seed;
     while(current_path != AlmanacPath {from: LocationType::Location, to: LocationType::Location}) {
+        println!("Current Location {:?}", current_location_val);
+        println!("Current path: {:?}", current_path);
         if let Some(ranges) = the_map.get(&current_path) {
             if let Some(dest_value) = ranges.get(&current_location_val) {
                 current_location_val = *dest_value;

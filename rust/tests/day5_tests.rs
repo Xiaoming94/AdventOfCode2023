@@ -39,7 +39,6 @@ mod acceptance_tests {
                         60 56 37\n\
                         56 93 4";
     #[googletest::test]
-    #[ignore]
     fn problem1() {
         let result = day5::find_lowest_location(INPUT);
         expect_that!(result, eq(35));
@@ -106,7 +105,7 @@ mod problem1_tests {
                         3 2 6";
 
        let result = day5::find_lowest_location(input);
-       expect_that!(result, eq(9)); 
+       expect_that!(result, eq(8)); 
     }
 
     #[googletest::test]
