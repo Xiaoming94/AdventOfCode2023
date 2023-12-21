@@ -108,9 +108,18 @@ pub fn calc_score(matching_numbers: &HashSet<u32>) -> u32 {
 pub fn calc_card_pile_size(input_cards: &str) -> u32 {
     let card_matches = find_matching_cards(input_cards);
     type CardPileType = HashMap<CardE, u32>;
-    let card_pile: CardPileType = card_matches.iter().map(|(card, _)| (*card, 1)).collect();
+    let mut card_pile: CardPileType = card_matches.iter().map(|(card, _)| (*card, 1)).collect();
 
-    for (CardE::Card(n), matches) in card_matches.iter() {}
+    for (CardE::Card(n), matches) in card_matches.iter() {
+        if let Some(copies) = card_pile.clone().get(&CardE::Card(*n)) {
+            let n_matches: u32 = matches.len().try_into().unwrap();
+            for i in n + 1..=n + n_matches {
+                card_pile.entry(CardE::Card(i)).and_modify(|num| {
+                    *num += copies;
+                });
+            }
+        }
+    }
 
     card_pile.values().sum()
 }

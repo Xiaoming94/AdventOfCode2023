@@ -34,7 +34,6 @@ mod acceptance_tests {
     }
 
     #[googletest::test]
-    #[ignore]
     fn problem2() {
         let card_pile_size = day4::calc_card_pile_size(INPUT);
         expect_that!(card_pile_size, eq(30));
@@ -158,7 +157,7 @@ mod problem2_tests {
     #[googletest::test]
     fn tc_2cards_card1_1winning() {
         let input_cards = "Card 1: 42 | 1 42\n\
-                            Card2: 12 | 1 52";
+                            Card 2: 12 | 1 52";
         let results = day4::calc_card_pile_size(input_cards);
         expect_that!(results, eq(3));
     }
@@ -166,7 +165,7 @@ mod problem2_tests {
     #[googletest::test]
     fn tc_2cards_card1_0winning() {
         let input_cards = "Card 1: 42 | 1 41\n\
-                            Card2: 12 | 1 52";
+                            Card 2: 12 | 1 52";
         let results = day4::calc_card_pile_size(input_cards);
         expect_that!(results, eq(2));
     }
@@ -174,7 +173,7 @@ mod problem2_tests {
     #[googletest::test]
     fn tc_2cards_1winning_each() {
         let input_cards = "Card 1: 42 | 1 42\n\
-                            Card2: 12 | 12 52";
+                            Card 2: 12 | 12 52";
         let results = day4::calc_card_pile_size(input_cards);
         expect_that!(results, eq(3));
     }
@@ -194,7 +193,7 @@ mod problem2_tests {
                           Card 2: 12 | 12 52\n\
                           Card 3: 14 21 | 13 12";
         let results = day4::calc_card_pile_size(input_cards);
-        expect_that!(results, eq(5));
+        expect_that!(results, eq(6));
     }
 
     #[googletest::test]
@@ -203,6 +202,6 @@ mod problem2_tests {
                           Card 2: 12 | 12 52\n\
                           Card 3: 14 21 | 13 12";
         let results = day4::calc_card_pile_size(input_cards);
-        expect_that!(results, eq(6));
+        expect_that!(results, eq(7));
     }
 }
