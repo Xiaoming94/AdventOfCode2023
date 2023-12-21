@@ -33,11 +33,8 @@ impl From<&str> for CardE {
 
 impl ToString for CardE {
     fn to_string(&self) -> String {
-        if let CardE::Card(n) = self {
-            "Card ".to_owned() + n.to_string().as_str()
-        } else {
-            "Card 0".to_owned()
-        }
+        let CardE::Card(n) = self;
+        "Card ".to_owned() + n.to_string().as_str()
     }
 }
 
