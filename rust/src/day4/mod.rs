@@ -1,8 +1,52 @@
 use std::collections::{BTreeMap, HashSet};
 
+
+#[derive(PartialEq, Eq, PartialOrd, Ord)]
+enum CardE {
+    Card (u32),
+}
+
+impl From<&String> for CardE {
+    fn from(card_str: &String) -> Self {
+        if let Some(card_num) = card_str.split_whitespace().last() {
+            match card_num.parse::<u32>() {
+                Ok(n) => CardE::Card(n),
+                Err(_) => CardE::Card(0)
+            }
+        } else {
+            CardE::Card(0)
+        }
+    }
+}
+
+impl From<&str> for CardE {
+    fn from(card_str: &str) -> Self {
+        if let Some(card_num) = card_str.split_whitespace().last() {
+            match card_num.parse::<u32>() {
+                Ok(n) => CardE::Card(n),
+                Err(_) => CardE::Card(0)
+            }
+        } else {
+            CardE::Card(0)
+        }
+    }
+}
+
+impl ToString for CardE {
+    fn to_string(&self) -> String {
+        if let CardE::Card(n) = self {
+            "Card ".to_owned() + n.to_string().as_str()
+        } else {
+            "Card 0".to_owned()
+        }
+    }
+}
+
+type CardResultsInternal = BTreeMap<CardE, HashSet<u32>>;
+
 type CardResults = BTreeMap<String, HashSet<u32>>;
 
-fn construct_card_game(cards_str: &str) -> (&str, HashSet<u32>, HashSet<u32>) {
+fn construct_card_game(cards_str: &str) -> (CardE, HashSet<u32>, HashSet<u32>) {
     if let Some((cardn, card_line)) = cards_str.split_once(':') {
         if let Some((winning_str, own_hand_str)) = card_line.split_once('|') {
             let winning_numbers: HashSet<u32> = winning_str
@@ -17,16 +61,16 @@ fn construct_card_game(cards_str: &str) -> (&str, HashSet<u32>, HashSet<u32>) {
                     acc
                 },
             );
-            (cardn, winning_numbers, own_hand)
+            (cardn.into(), winning_numbers, own_hand)
         } else {
-            ("", HashSet::new(), HashSet::new())
+            (CardE::Card(0), HashSet::new(), HashSet::new())
         }
     } else {
-        ("", HashSet::new(), HashSet::new())
+        (CardE::Card(0), HashSet::new(), HashSet::new())
     }
 }
 
-fn find_winning_matches_in_card(card_line: &str) -> (String, HashSet<u32>) {
+fn find_winning_matches_in_card(card_line: &str) -> (CardE, HashSet<u32>) {
     let (card, winning_nums, hand) = construct_card_game(card_line);
     let matching_numbers: HashSet<u32> =
         winning_nums
@@ -35,13 +79,20 @@ fn find_winning_matches_in_card(card_line: &str) -> (String, HashSet<u32>) {
                 set.insert(*num);
                 set
             });
-    (card.to_owned(), matching_numbers)
+    (card, matching_numbers)
 }
 
-pub fn find_winning_card_scores(input_cards: &str) -> CardResults {
+fn find_matching_cards(input_cards: &str) -> CardResultsInternal {
     input_cards
         .split('\n')
         .map(find_winning_matches_in_card)
+        .collect()
+}
+
+pub fn find_winning_card_scores(input_cards: &str) -> CardResults {
+    find_matching_cards(input_cards)
+        .into_iter()
+        .map(|(card, matching)| (card.to_string(), matching))
         .collect()
 }
 
@@ -55,6 +106,6 @@ pub fn calc_score(matching_numbers: &HashSet<u32>) -> u32 {
     }
 }
 
-pub fn calc_card_pile_size(card_with_wins: CardResults) -> u32 {
+pub fn calc_card_pile_size(input_cards: &str) -> u32 {
     1
 }
