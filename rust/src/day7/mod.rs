@@ -65,7 +65,7 @@ impl From<char> for Card {
     }
 }
 
-#[derive(PartialEq, Eq)]
+#[derive(Debug, PartialEq, Eq)]
 enum HandType {
     Five,
     Four,
@@ -215,6 +215,13 @@ impl Ord for Hand {
         } else {
             for (card1, card2) in zip(&self.hand, &other.hand) {
                 if !card1.eq(card2) {
+                if self.jacks_as_joker {
+                    if card1 == &Card::Jack {
+                        return Ordering::Less;
+                    } else if card2 == &Card::Jack {
+                        return Ordering::Greater;
+                    }
+                }
                     return card1.cmp(card2);
                 }
             }
@@ -225,7 +232,11 @@ impl Ord for Hand {
 
 impl PartialOrd for Hand {
     fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
-        Some(self.cmp(other))
+        if self.jacks_as_joker != other.jacks_as_joker {
+            None
+        } else {
+            Some(self.cmp(other))
+        }
     }
 }
 
@@ -265,7 +276,6 @@ pub fn compute_hands_bid_value(hands_bid_data: &str) -> u32 {
                 ranked_handbids_map
             },
         );
-    println!("{:?}", hands_to_bids);
 
     let bid_returns = calculate_bid_returns(hands_to_bids.values().collect());
     return bid_returns.iter().sum();
@@ -282,8 +292,10 @@ pub fn compute_hands_bid_jokers(hands_bid_data: &str) -> u32 {
                 ranked_handbids_map
             },
         );
-    println!("{:?}", hands_to_bids);
-
+    hands_to_bids
+        .iter()
+        .for_each(|hand_bid| println!("{:?} \t HandType: {:?}", hand_bid, hand_bid.0.get_hand_type()));
+    
     let bid_returns = calculate_bid_returns(hands_to_bids.values().collect());
     return bid_returns.iter().sum();
 }
