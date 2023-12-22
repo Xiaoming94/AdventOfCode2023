@@ -17,7 +17,7 @@ mod day7_acceptance_test {
         let result = day7::compute_hands_bid_value(INPUT);
         expect_that!(result, eq(6440));
     }
-    
+
     #[googletest::test]
     fn problem2() {
         let result = day7::compute_hands_bid_jokers(INPUT);

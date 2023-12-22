@@ -112,7 +112,7 @@ type HandCards = [Card; 5];
 #[derive(Debug, PartialEq, Eq)]
 struct Hand {
     hand: HandCards,
-    jacks_as_joker: bool
+    jacks_as_joker: bool,
 }
 
 impl Hand {
@@ -123,15 +123,15 @@ impl Hand {
     pub fn get_hand_type(&self) -> HandType {
         let hand_type = self.get_hand_type_legacy();
         if self.jacks_as_joker {
-            self.improve_jacks_hands(hand_type) 
+            self.improve_jacks_hands(hand_type)
         } else {
             hand_type
         }
     }
 
-
-    fn improve_jacks_hands (&self, hand_type: HandType) -> HandType {
-        let num_of_jokers = self.hand
+    fn improve_jacks_hands(&self, hand_type: HandType) -> HandType {
+        let num_of_jokers = self
+            .hand
             .iter()
             .filter(|card| (*card).eq(&Card::Jack))
             .count();
@@ -142,10 +142,16 @@ impl Hand {
             match hand_type {
                 HandType::Five => HandType::Five, // There are 5 jacks, it's a Five
                 HandType::HighCard => HandType::OnePair, // As long as 1 joker exists, this will become a 1pair
-                HandType::Four => HandType::Five, // A Five is always bigger than Four
+                HandType::Four => HandType::Five,        // A Five is always bigger than Four
                 HandType::FullHouse => HandType::Five, // As long as Joker is part of a Fullhouse, it's a Five
                 HandType::Three => HandType::Four, // As long as Joker is part of a Three Hand, it's a Four
-                HandType::TwoPair => if num_of_jokers == 1 { HandType::FullHouse } else { HandType::Four }
+                HandType::TwoPair => {
+                    if num_of_jokers == 1 {
+                        HandType::FullHouse
+                    } else {
+                        HandType::Four
+                    }
+                }
                 HandType::OnePair => HandType::Three, // A pair of joker -> Three, 1 joker -> Three
             }
         }
@@ -196,8 +202,8 @@ impl From<&str> for Hand {
                     s
                 )
             }),
-            
-            jacks_as_joker: false
+
+            jacks_as_joker: false,
         }
     }
 }
@@ -251,14 +257,14 @@ fn calculate_bid_returns(bids: Vec<&u32>) -> Vec<u32> {
 pub fn compute_hands_bid_value(hands_bid_data: &str) -> u32 {
     let hands_to_bids = hands_bid_data
         .split("\n")
-        .map(|line|parse_hand_bid(line, false))
+        .map(|line| parse_hand_bid(line, false))
         .fold(
-        BTreeMap::new(),
-        move |mut ranked_handbids_map, (hand, bid)| {
-            ranked_handbids_map.insert(hand, bid);
-            ranked_handbids_map
-        },
-    );
+            BTreeMap::new(),
+            move |mut ranked_handbids_map, (hand, bid)| {
+                ranked_handbids_map.insert(hand, bid);
+                ranked_handbids_map
+            },
+        );
     println!("{:?}", hands_to_bids);
 
     let bid_returns = calculate_bid_returns(hands_to_bids.values().collect());
@@ -270,12 +276,12 @@ pub fn compute_hands_bid_jokers(hands_bid_data: &str) -> u32 {
         .split("\n")
         .map(|line| parse_hand_bid(line, true))
         .fold(
-        BTreeMap::new(),
-        move |mut ranked_handbids_map, (hand, bid)| {
-            ranked_handbids_map.insert(hand, bid);
-            ranked_handbids_map
-        },
-    );
+            BTreeMap::new(),
+            move |mut ranked_handbids_map, (hand, bid)| {
+                ranked_handbids_map.insert(hand, bid);
+                ranked_handbids_map
+            },
+        );
     println!("{:?}", hands_to_bids);
 
     let bid_returns = calculate_bid_returns(hands_to_bids.values().collect());
