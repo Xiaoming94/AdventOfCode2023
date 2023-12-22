@@ -57,8 +57,8 @@ fn find_race_solutions(time: f64, distance: f64) -> Option<u64> {
         Some(1)
     } else {
         let pos_term = time / 2.0;
-        let mut upper_limit = (pos_term + root).ceil();
-        let mut lower_limit = (pos_term - root).floor();
+        let mut upper_limit = (pos_term + root).floor();
+        let mut lower_limit = (pos_term - root).ceil();
 
         println!("upper_value: {}, lower_value {}", upper_limit, lower_limit);
 
