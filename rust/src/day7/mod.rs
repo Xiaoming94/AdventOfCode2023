@@ -292,9 +292,6 @@ pub fn compute_hands_bid_jokers(hands_bid_data: &str) -> u32 {
                 ranked_handbids_map
             },
         );
-    hands_to_bids
-        .iter()
-        .for_each(|hand_bid| println!("{:?} \t HandType: {:?}", hand_bid, hand_bid.0.get_hand_type()));
     
     let bid_returns = calculate_bid_returns(hands_to_bids.values().collect());
     return bid_returns.iter().sum();
