@@ -16,6 +16,12 @@ mod day6_acceptance_tests {
         let result: u64 = solutions.iter().product();
         expect_that!(result, eq(288));
     }
+
+    #[googletest::test]
+    fn problem2() {
+        let result = day6::find_joined_race_solution(INPUT);
+        expect_that!(result, eq(71503));
+    }
 }
 
 #[cfg(test)]
@@ -63,3 +69,9 @@ mod day6_problem1_tests {
         expect_that!(result, eq(3));
     }
 }
+
+/*
+ * The general solution for Problem 2 is the same as problem 1.
+ * Difference is that now the numbers of the rows are joined instead of separating into their own columns
+ * So no new tcs for problem 2 is added
+ */
