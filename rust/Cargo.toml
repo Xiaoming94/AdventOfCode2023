@@ -31,3 +31,9 @@ name = "day5_exec"
 test = true
 bench = true
 path = "src/day5_main.rs"
+
+[[bin]]
+name = "day6_exec"
+test = true
+bench = true
+path = "src/day6_main.rs"
