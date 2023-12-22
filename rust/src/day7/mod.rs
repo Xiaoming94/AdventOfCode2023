@@ -112,10 +112,46 @@ type HandCards = [Card; 5];
 #[derive(Debug, PartialEq, Eq)]
 struct Hand {
     hand: HandCards,
+    jacks_as_joker: bool
 }
 
 impl Hand {
+    pub fn enable_joker(&mut self) {
+        self.jacks_as_joker = true;
+    }
+
     pub fn get_hand_type(&self) -> HandType {
+        let hand_type = self.get_hand_type_legacy();
+        if self.jacks_as_joker {
+            self.improve_jacks_hands(hand_type) 
+        } else {
+            hand_type
+        }
+    }
+
+
+    fn improve_jacks_hands (&self, hand_type: HandType) -> HandType {
+        let num_of_jokers = self.hand
+            .iter()
+            .filter(|card| (*card).eq(&Card::Jack))
+            .count();
+
+        if num_of_jokers == 0 {
+            hand_type
+        } else {
+            match hand_type {
+                HandType::Five => HandType::Five, // There are 5 jacks, it's a Five
+                HandType::HighCard => HandType::OnePair, // As long as 1 joker exists, this will become a 1pair
+                HandType::Four => HandType::Five, // A Five is always bigger than Four
+                HandType::FullHouse => HandType::Five, // As long as Joker is part of a Fullhouse, it's a Five
+                HandType::Three => HandType::Four, // As long as Joker is part of a Three Hand, it's a Four
+                HandType::TwoPair => if num_of_jokers == 1 { HandType::FullHouse } else { HandType::Four }
+                HandType::OnePair => HandType::Three, // A pair of joker -> Three, 1 joker -> Three
+            }
+        }
+    }
+
+    fn get_hand_type_legacy(&self) -> HandType {
         let card_counter: HashMap<Card, u32> =
             self.hand
                 .iter()
@@ -160,6 +196,8 @@ impl From<&str> for Hand {
                     s
                 )
             }),
+            
+            jacks_as_joker: false
         }
     }
 }
@@ -187,9 +225,12 @@ impl PartialOrd for Hand {
 
 type BidType = u32;
 
-fn parse_hand_bid(hand_bid_str: &str) -> (Hand, BidType) {
+fn parse_hand_bid(hand_bid_str: &str, use_joker: bool) -> (Hand, BidType) {
     if let Some((hand_data, bid_str)) = hand_bid_str.split_once(' ') {
-        let hand = Hand::from(hand_data);
+        let mut hand = Hand::from(hand_data);
+        if use_joker {
+            hand.enable_joker();
+        }
         let bid = bid_str.parse::<u32>().unwrap();
         (hand, bid)
     } else {
@@ -208,7 +249,27 @@ fn calculate_bid_returns(bids: Vec<&u32>) -> Vec<u32> {
 }
 
 pub fn compute_hands_bid_value(hands_bid_data: &str) -> u32 {
-    let hands_to_bids = hands_bid_data.split("\n").map(parse_hand_bid).fold(
+    let hands_to_bids = hands_bid_data
+        .split("\n")
+        .map(|line|parse_hand_bid(line, false))
+        .fold(
+        BTreeMap::new(),
+        move |mut ranked_handbids_map, (hand, bid)| {
+            ranked_handbids_map.insert(hand, bid);
+            ranked_handbids_map
+        },
+    );
+    println!("{:?}", hands_to_bids);
+
+    let bid_returns = calculate_bid_returns(hands_to_bids.values().collect());
+    return bid_returns.iter().sum();
+}
+
+pub fn compute_hands_bid_jokers(hands_bid_data: &str) -> u32 {
+    let hands_to_bids = hands_bid_data
+        .split("\n")
+        .map(|line| parse_hand_bid(line, true))
+        .fold(
         BTreeMap::new(),
         move |mut ranked_handbids_map, (hand, bid)| {
             ranked_handbids_map.insert(hand, bid);
