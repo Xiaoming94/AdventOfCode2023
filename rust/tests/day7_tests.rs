@@ -109,7 +109,7 @@ mod day7_problem2_tests {
         let result = day7::compute_hands_bid_jokers(input);
         expect_that!(result, eq(42));
     }
-    
+
     #[googletest::test]
     fn tc_2hands_weak_jack() {
         let input = "JJJJ2 15\n\

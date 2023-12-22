@@ -215,13 +215,13 @@ impl Ord for Hand {
         } else {
             for (card1, card2) in zip(&self.hand, &other.hand) {
                 if !card1.eq(card2) {
-                if self.jacks_as_joker {
-                    if card1 == &Card::Jack {
-                        return Ordering::Less;
-                    } else if card2 == &Card::Jack {
-                        return Ordering::Greater;
+                    if self.jacks_as_joker {
+                        if card1 == &Card::Jack {
+                            return Ordering::Less;
+                        } else if card2 == &Card::Jack {
+                            return Ordering::Greater;
+                        }
                     }
-                }
                     return card1.cmp(card2);
                 }
             }
@@ -292,7 +292,7 @@ pub fn compute_hands_bid_jokers(hands_bid_data: &str) -> u32 {
                 ranked_handbids_map
             },
         );
-    
+
     let bid_returns = calculate_bid_returns(hands_to_bids.values().collect());
     return bid_returns.iter().sum();
 }
