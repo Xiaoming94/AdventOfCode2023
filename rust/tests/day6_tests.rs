@@ -36,29 +36,29 @@ mod day6_problem1_tests {
         let solutions = day6::find_winning_solutions(input);
         let expected_solutions: Vec<u64> = vec![1];
         expect_that!(solutions, eq(expected_solutions));
-        
+
         let result: u64 = solutions.iter().product();
         expect_that!(result, eq(1));
     }
-    
+
     #[googletest::test]
     fn tc_1race_time6_distance_8() {
         let input = "Time: 6\nDistance: 8";
         let solutions = day6::find_winning_solutions(input);
         let expected_solutions: Vec<u64> = vec![1];
         expect_that!(solutions, eq(expected_solutions));
-        
+
         let result: u64 = solutions.iter().product();
         expect_that!(result, eq(1));
     }
-    
+
     #[googletest::test]
     fn tc_2races_time6and12_distance8and32() {
         let input = "Time: 6 12\nDistance: 8 32";
         let solutions = day6::find_winning_solutions(input);
         let expected_solutions: Vec<u64> = vec![1, 3];
         expect_that!(solutions, eq(expected_solutions));
-        
+
         let result: u64 = solutions.iter().product();
         expect_that!(result, eq(3));
     }

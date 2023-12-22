@@ -23,26 +23,25 @@ fn build_race_table(race_data: &str) -> RaceTable {
     }
 }
 
-fn find_race_solutions(time: f64, distance: f64) -> Option <u64> {
-
+fn find_race_solutions(time: f64, distance: f64) -> Option<u64> {
     println!("time: {time}, distance: {distance}");
-    let root: f64 = ((time/2.0).powf(2.0) - distance).sqrt();
+    let root: f64 = ((time / 2.0).powf(2.0) - distance).sqrt();
     if root.is_nan() {
         None
     } else if root.eq(&0.0) {
         Some(1)
     } else {
-        let pos_term = time/2.0;
+        let pos_term = time / 2.0;
         let mut upper_limit = (pos_term + root).ceil();
         let mut lower_limit = (pos_term - root).floor();
-        
+
         println!("upper_value: {}, lower_value {}", upper_limit, lower_limit);
 
         println!("raced_distance: {}", (upper_limit * (time - upper_limit)));
         while (upper_limit * (time - upper_limit)) <= distance {
             upper_limit -= 1.0;
         }
-        
+
         println!("raced_distance: {}", (lower_limit * (time - lower_limit)));
         while (lower_limit * (time - lower_limit)) <= distance {
             lower_limit += 1.0;
