@@ -13,7 +13,6 @@ mod day7_acceptance_test {
                          QQQJA 483";
 
     #[googletest::test]
-    #[ignore]
     fn problem1() {
         let result = day7::compute_hands_bid_value(INPUT);
         expect_that!(result, eq(6440));
@@ -48,7 +47,7 @@ mod day7_problem1_tests {
 
     #[googletest::test]
     fn tc_2hands_2ndbigger() {
-        let input = "KKJJJ 15\n\
+        let input = "KKJJ2 15\n\
                            QQQ77 12";
         let result = day7::compute_hands_bid_value(input);
         expect_that!(result, eq(39));
@@ -56,7 +55,7 @@ mod day7_problem1_tests {
 
     #[googletest::test]
     fn tc_2hands_one_underordered() {
-        let input = "42JJJ 15\n\
+        let input = "Q2JJJ 15\n\
                            QTQQT 12";
         let result = day7::compute_hands_bid_value(input);
         expect_that!(result, eq(39));
