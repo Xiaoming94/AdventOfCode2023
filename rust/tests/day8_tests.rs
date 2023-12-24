@@ -22,14 +22,12 @@ mod day8_acceptance_test {
                            BBB = (AAA, ZZZ)\n\
                            ZZZ = (ZZZ, ZZZ)";
     #[googletest::test]
-    #[ignore]
     fn problem1_input1() {
         let result = day8::find_path_through_network(INPUT_1);
         expect_that!(result, eq(2u32));
     }
 
     #[googletest::test]
-    #[ignore]
     fn problem1_input2() {
         let result = day8::find_path_through_network(INPUT_2);
         expect_that!(result, eq(6u32));
