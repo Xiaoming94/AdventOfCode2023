@@ -44,7 +44,7 @@ mod problem1_tests {
     fn tc_1node_left() {
         let graph_str = "L\n\
                           \n\
-                          AAA = (ZZZ, ZZZ)\n;
+                          AAA = (ZZZ, ZZZ)\n\
                           ZZZ = (ZZZ, ZZZ)";
 
         let result = day8::find_path_through_network(graph_str);
@@ -55,7 +55,7 @@ mod problem1_tests {
     fn tc_1node_right() {
         let graph_str = "R\n\
                           \n\
-                          AAA = (ZZZ, ZZZ)\n
+                          AAA = (ZZZ, ZZZ)\n\
                           ZZZ = (ZZZ, ZZZ)";
 
         let result = day8::find_path_through_network(graph_str);
