@@ -35,3 +35,129 @@ mod day8_acceptance_test {
         expect_that!(result, eq(6u32));
     }
 }
+
+#[cfg(test)]
+mod problem1_tests {
+    use super::*;
+
+    #[googletest::test]
+    fn tc_1node_left() {
+        let graph_str = "L\n\
+                          \n\
+                          AAA = (ZZZ, ZZZ)\n;
+                          ZZZ = (ZZZ, ZZZ)";
+
+        let result = day8::find_path_through_network(graph_str);
+        expect_that!(result, eq(1));
+    }
+
+    #[googletest::test]
+    fn tc_1node_right() {
+        let graph_str = "R\n\
+                          \n\
+                          AAA = (ZZZ, ZZZ)\n
+                          ZZZ = (ZZZ, ZZZ)";
+
+        let result = day8::find_path_through_network(graph_str);
+        expect_that!(result, eq(1));
+    }
+
+    #[googletest::test]
+    fn tc_2nodes_2right() {
+        let graph_str = "RR\n\
+                          \n\
+                          AAA = (ZZZ, BBB)\n\
+                          BBB = (AAA, ZZZ)\n\
+                          ZZZ = (ZZZ, ZZZ)";
+
+        let result = day8::find_path_through_network(graph_str);
+        expect_that!(result, eq(2));
+    }
+
+    #[googletest::test]
+    fn tc_2nodes_1right() {
+        let graph_str = "R\n\
+                          \n\
+                          AAA = (ZZZ, BBB)\n\
+                          BBB = (AAA, ZZZ)\n\
+                          ZZZ = (ZZZ, ZZZ)";
+
+        let result = day8::find_path_through_network(graph_str);
+        expect_that!(result, eq(2));
+    }
+
+    #[googletest::test]
+    fn tc_2nodes_1left() {
+        let graph_str = "L\n\
+                          \n\
+                          AAA = (ZZZ, BBB)\n\
+                          BBB = (AAA, ZZZ)\n\
+                          ZZZ = (ZZZ, ZZZ)";
+
+        let result = day8::find_path_through_network(graph_str);
+        expect_that!(result, eq(1));
+    }
+
+    #[googletest::test]
+    fn tc_2nodes_2left() {
+        let graph_str = "LL\n\
+                          \n\
+                          AAA = (ZZZ, BBB)\n\
+                          BBB = (AAA, ZZZ)\n\
+                          ZZZ = (ZZZ, ZZZ)";
+
+        let result = day8::find_path_through_network(graph_str);
+        expect_that!(result, eq(1));
+    }
+
+    #[googletest::test]
+    fn tc_2nodes_2left_2step() {
+        let graph_str = "LL\n\
+                          \n\
+                          AAA = (BBB, BBB)\n\
+                          BBB = (ZZZ, ZZZ)\n\
+                          ZZZ = (ZZZ, ZZZ)";
+
+        let result = day8::find_path_through_network(graph_str);
+        expect_that!(result, eq(2));
+    }
+
+    #[googletest::test]
+    fn tc_3nodes_alternating() {
+        let graph_str = "RL\n\
+                          \n\
+                          AAA = (BBB, CCC)\n\
+                          BBB = (AAA, ZZZ)\n\
+                          CCC = (ZZZ, BBB)\n\
+                          ZZZ = (ZZZ, ZZZ)";
+
+        let result = day8::find_path_through_network(graph_str);
+        expect_that!(result, eq(2));
+    }
+
+    #[googletest::test]
+    fn tc_3nodes_alternating_with_period() {
+        let graph_str = "RL\n\
+                          \n\
+                          AAA = (BBB, CCC)\n\
+                          BBB = (AAA, ZZZ)\n\
+                          CCC = (BBB, AAA)\n\
+                          ZZZ = (ZZZ, ZZZ)";
+
+        let result = day8::find_path_through_network(graph_str);
+        expect_that!(result, eq(3));
+    }
+
+    #[googletest::test]
+    fn tc_3nodes_rightrightleft() {
+        let graph_str = "RRL\n\
+                          \n\
+                          AAA = (BBB, CCC)\n\
+                          BBB = (AAA, ZZZ)\n\
+                          CCC = (BBB, AAA)\n\
+                          ZZZ = (ZZZ, ZZZ)";
+
+        let result = day8::find_path_through_network(graph_str);
+        expect_that!(result, eq(4));
+    }
+}
